@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, TrendingUp, Zap, Target } from 'lucide-react';
+import { Search, TrendingUp, Zap, Target, X } from 'lucide-react';
 
 const Hero = () => {
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -39,6 +39,10 @@ const Hero = () => {
       console.log('Analyzing:', { websiteUrl, selectedSector });
       // Handle analysis here
     }
+  };
+
+  const clearInput = () => {
+    setWebsiteUrl('');
   };
 
   return (
@@ -75,22 +79,30 @@ const Hero = () => {
 
           {/* Analysis Form */}
           <Card className="max-w-4xl mx-auto mt-12">
-            <CardContent className=" space-y-4">
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <CardContent className=" space-y-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1 relative max-w-md">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="url"
                     value={websiteUrl}
                     onChange={(e) => setWebsiteUrl(e.target.value)}
                     placeholder="https://yoursite.com"
-                    className="pl-10"
+                    className="pl-12 pr-10 h-12 text-base"
                   />
+                  {websiteUrl && (
+                    <button
+                      onClick={clearInput}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
+                      aria-label="Temizle"
+                    >
+                      <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                    </button>
+                  )}
                 </div>
                 
                 <Select value={selectedSector} onValueChange={setSelectedSector}>
-                  <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectTrigger className="w-full sm:w-[200px] h-12 text-base min-h-[48px]">
                     <SelectValue placeholder="Sektör" />
                   </SelectTrigger>
                   <SelectContent>
@@ -105,8 +117,9 @@ const Hero = () => {
                 <Button 
                   onClick={handleAnalyze}
                   disabled={!websiteUrl}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-[180px] h-12 px-8 text-base"
                 >
+                  <Search className="h-5 w-5 mr-2" />
                   Analiz Et
                 </Button>
               </div>
