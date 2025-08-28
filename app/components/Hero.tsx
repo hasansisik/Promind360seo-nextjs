@@ -1,27 +1,37 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Search, TrendingUp, Zap, Target } from 'lucide-react';
 
 const Hero = () => {
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const sectors = [
-    'Sektör Seçin',
-    'E-ticaret',
-    'Sağlık',
-    'Eğitim',
-    'Finans',
-    'Teknoloji',
-    'Turizm',
-    'Gıda',
-    'Moda',
-    'Emlak',
-    'Hukuk',
-    'Spor',
-    'Medya',
-    'Diğer'
+    { value: 'ecommerce', label: 'E-ticaret' },
+    { value: 'health', label: 'Sağlık' },
+    { value: 'education', label: 'Eğitim' },
+    { value: 'finance', label: 'Finans' },
+    { value: 'technology', label: 'Teknoloji' },
+    { value: 'tourism', label: 'Turizm' },
+    { value: 'food', label: 'Gıda' },
+    { value: 'fashion', label: 'Moda' },
+    { value: 'real-estate', label: 'Emlak' },
+    { value: 'law', label: 'Hukuk' },
+    { value: 'sports', label: 'Spor' },
+    { value: 'media', label: 'Medya' },
+    { value: 'other', label: 'Diğer' }
+  ];
+
+  const features = [
+    { icon: TrendingUp, title: 'Veri Odaklı', description: 'Analitik tabanlı stratejiler' },
+    { icon: Zap, title: 'Hızlı Sonuç', description: '30 günde ilk sonuçlar' },
+    { icon: Target, title: 'Hedef Odaklı', description: 'Sektöre özel yaklaşım' }
   ];
 
   const handleAnalyze = () => {
@@ -32,130 +42,92 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-gray-50 pb-16 min-h-screen flex items-center relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Main Heading */}
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-            <div className="flex items-center justify-center">
-              <div className="relative">
-                <span className="text-purple-600">SEO</span>
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-purple-700 transform -skew-x-12"></div>
-              </div>
-              <span className="ml-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Marketing & Agency
+          <div className="space-y-4">
+            <Badge variant="secondary" className="mb-4">
+              Modern SEO Çözümleri
+            </Badge>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                SEO
               </span>
-            </div>
-          </h1>
-          
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            Ensuring the best return on investment for your bespoke SEO Campaign requirement.
-          </p>
+              <span className="text-foreground"> Marketing & Agency</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Ensuring the best return on investment for your bespoke SEO Campaign requirement.
+            </p>
+          </div>
+
+          {/* Features */}
+          <div className="flex flex-wrap justify-center gap-6 mt-8">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <feature.icon className="h-4 w-4 text-primary" />
+                <span className="font-medium">{feature.title}</span>
+                <span>•</span>
+                <span>{feature.description}</span>
+              </div>
+            ))}
+          </div>
 
           {/* Analysis Form */}
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Website URL Input */}
-              <div className="flex-1 flex items-center bg-gray-50 rounded-lg px-4 py-3">
-                <svg className="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                <input
-                  type="url"
-                  value={websiteUrl}
-                  onChange={(e) => setWebsiteUrl(e.target.value)}
-                  placeholder="https://yoursite.com"
-                  className="flex-1 bg-transparent border-none outline-none text-gray-700"
-                />
+          <Card className="max-w-2xl mx-auto mt-12">
+            <CardContent className="p-6 space-y-4">
+              <div className="text-center space-y-2">
+                <h3 className="text-lg font-semibold">Ücretsiz SEO Analizi</h3>
+                <p className="text-sm text-muted-foreground">
+                  Web sitenizi analiz edelim ve SEO stratejinizi optimize edelim
+                </p>
               </div>
               
-              {/* Sector Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full bg-gray-50 rounded-lg px-4 py-3 hover:bg-gray-100 transition-all duration-300 flex items-center justify-between min-w-[200px]"
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="url"
+                    value={websiteUrl}
+                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                    placeholder="https://yoursite.com"
+                    className="pl-10"
+                  />
+                </div>
+                
+                <Select value={selectedSector} onValueChange={setSelectedSector}>
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Sektör" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sectors.map((sector) => (
+                      <SelectItem key={sector.value} value={sector.value}>
+                        {sector.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                
+                <Button 
+                  onClick={handleAnalyze}
+                  disabled={!websiteUrl}
+                  className="w-full sm:w-auto"
                 >
-                  <div className="flex items-center">
-                    <span className="text-gray-700 font-medium">
-                      Sektör
-                    </span>
-                  </div>
-                  <svg 
-                    className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {/* Dropdown Content */}
-                {isDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-                    <div className="p-4">
-                      <h3 className="text-sm font-medium text-gray-700 mb-3">Sektörünüzü Seçin</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
-                        {sectors.slice(1).map((sector) => (
-                          <button
-                            key={sector}
-                            onClick={() => {
-                              setSelectedSector(sector);
-                              setIsDropdownOpen(false);
-                            }}
-                            className="p-2 text-left rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 border border-gray-100 hover:border-blue-200 text-sm"
-                          >
-                            <div className="font-medium">{sector}</div>
-                          </button>
-                        ))}
-                      </div>
-                      
-                      <div className="border-t border-gray-200 pt-3">
-                        <h4 className="text-xs font-medium text-gray-600 mb-2">Özel Sektör</h4>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            placeholder="Özel sektör adı"
-                            className="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          />
-                          <button className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                            Ekle
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  Analiz Et
+                </Button>
               </div>
-              
-              {/* Analyze Button */}
-              <button
-                onClick={handleAnalyze}
-                disabled={!websiteUrl}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Analyze Now
-              </button>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-      
-      {/* Wavy Bottom Edge */}
-      <div className="absolute -bottom-1 left-0 w-full overflow-hidden">
-        <svg
-          className="relative block w-full h-24"
-          data-name="Layer 1"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,120L300,80C600,40,900,40,1200,80V120Z"
-            className="fill-white"
-          ></path>
-        </svg>
+
+      {/* Background Pattern */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-[50%] top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5" />
+          </div>
+        </div>
       </div>
     </section>
   );
