@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, TrendingUp, Zap, Target, X, Loader2 } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, Clock, BarChart3, Globe, Smartphone, Monitor } from 'lucide-react';
 
 const Hero = () => {
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -14,6 +15,7 @@ const Hero = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
+  const [showResults, setShowResults] = useState(false);
 
   const sectors = [
     { value: 'ecommerce', label: 'E-ticaret' },
@@ -47,11 +49,51 @@ const Hero = () => {
     { progress: 100, message: 'Rapor hazırlanıyor...' }
   ];
 
+  // Mock analysis results
+  const analysisResults = {
+    seo: {
+      score: 78,
+      title: 'SEO Optimizasyonu',
+      issues: [
+        { type: 'error', message: 'Meta description eksik', impact: 'Yüksek' },
+        { type: 'warning', message: 'H1 etiketi fazla kullanılmış', impact: 'Orta' },
+        { type: 'success', message: 'Alt etiketleri mevcut', impact: 'Düşük' }
+      ]
+    },
+    performance: {
+      score: 85,
+      title: 'Performans',
+      metrics: [
+        { name: 'First Contentful Paint', value: '1.2s', status: 'good' },
+        { name: 'Largest Contentful Paint', value: '2.8s', status: 'good' },
+        { name: 'Cumulative Layout Shift', value: '0.05', status: 'good' },
+        { name: 'First Input Delay', value: '45ms', status: 'good' }
+      ]
+    },
+    accessibility: {
+      score: 92,
+      title: 'Erişilebilirlik',
+      issues: [
+        { type: 'success', message: 'Renk kontrastı uygun', impact: 'Düşük' },
+        { type: 'warning', message: 'Alt etiketleri eksik', impact: 'Orta' }
+      ]
+    },
+    bestPractices: {
+      score: 88,
+      title: 'En İyi Uygulamalar',
+      issues: [
+        { type: 'success', message: 'HTTPS kullanılıyor', impact: 'Düşük' },
+        { type: 'warning', message: 'Console hataları mevcut', impact: 'Orta' }
+      ]
+    }
+  };
+
   const handleAnalyze = async () => {
     if (websiteUrl) {
       setIsAnalyzing(true);
       setProgress(0);
       setCurrentStep('');
+      setShowResults(false);
 
       // Simulate analysis progress
       for (let i = 0; i < analysisSteps.length; i++) {
@@ -68,6 +110,7 @@ const Hero = () => {
         setIsAnalyzing(false);
         setProgress(0);
         setCurrentStep('');
+        setShowResults(true);
         console.log('Analysis completed for:', { websiteUrl, selectedSector });
       }, 1000);
     }
@@ -75,6 +118,24 @@ const Hero = () => {
 
   const clearInput = () => {
     setWebsiteUrl('');
+  };
+
+  const resetAnalysis = () => {
+    setShowResults(false);
+    setWebsiteUrl('');
+    setSelectedSector('');
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
+  const getScoreBg = (score: number) => {
+    if (score >= 90) return 'bg-green-100';
+    if (score >= 70) return 'bg-yellow-100';
+    return 'bg-red-100';
   };
 
   return (
@@ -112,7 +173,7 @@ const Hero = () => {
           {/* Analysis Form */}
           <Card className="max-w-4xl mx-auto mt-12">
             <CardContent className=" space-y-6">
-              {!isAnalyzing ? (
+              {!isAnalyzing && !showResults ? (
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative max-w-md">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -156,7 +217,7 @@ const Hero = () => {
                     Analiz Et
                   </Button>
                 </div>
-              ) : (
+              ) : isAnalyzing ? (
                 <div className="space-y-6">
                   {/* Progress Bar */}
                   <div className="space-y-3">
@@ -190,6 +251,152 @@ const Hero = () => {
                   >
                     İptal Et
                   </Button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Results Header */}
+                  <div className="text-center space-y-2">
+                    <h3 className="text-2xl font-bold">Analiz Sonuçları</h3>
+                    <p className="text-muted-foreground">Web sitesi: {websiteUrl}</p>
+                  </div>
+
+                  {/* Overall Score */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2">
+                        <BarChart3 className="h-5 w-5" />
+                        <span>Genel Performans Skoru</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-center space-x-4">
+                        <div className={`w-24 h-24 rounded-full ${getScoreBg(85)} flex items-center justify-center`}>
+                          <span className={`text-2xl font-bold ${getScoreColor(85)}`}>85</span>
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm text-muted-foreground">Mükemmel performans</p>
+                          <p className="text-xs text-muted-foreground">Son güncelleme: {new Date().toLocaleString('tr-TR')}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Detailed Metrics */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* SEO */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                          <Globe className="h-5 w-5" />
+                          <span>SEO ({analysisResults.seo.score})</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <Progress value={analysisResults.seo.score} className="h-2" />
+                        <div className="space-y-2">
+                          {analysisResults.seo.issues.map((issue, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-sm">
+                              {issue.type === 'error' ? (
+                                <AlertCircle className="h-4 w-4 text-red-500" />
+                              ) : issue.type === 'warning' ? (
+                                <AlertCircle className="h-4 w-4 text-yellow-500" />
+                              ) : (
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              )}
+                              <span className="flex-1">{issue.message}</span>
+                              <Badge variant="outline" className="text-xs">{issue.impact}</Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Performance */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                          <Zap className="h-5 w-5" />
+                          <span>Performans ({analysisResults.performance.score})</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <Progress value={analysisResults.performance.score} className="h-2" />
+                        <div className="space-y-2">
+                          {analysisResults.performance.metrics.map((metric, index) => (
+                            <div key={index} className="flex justify-between items-center text-sm">
+                              <span>{metric.name}</span>
+                              <span className={`font-mono ${metric.status === 'good' ? 'text-green-600' : 'text-red-600'}`}>
+                                {metric.value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Accessibility */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                          <Smartphone className="h-5 w-5" />
+                          <span>Erişilebilirlik ({analysisResults.accessibility.score})</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <Progress value={analysisResults.accessibility.score} className="h-2" />
+                        <div className="space-y-2">
+                          {analysisResults.accessibility.issues.map((issue, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-sm">
+                              {issue.type === 'success' ? (
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <AlertCircle className="h-4 w-4 text-yellow-500" />
+                              )}
+                              <span className="flex-1">{issue.message}</span>
+                              <Badge variant="outline" className="text-xs">{issue.impact}</Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Best Practices */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                          <Monitor className="h-5 w-5" />
+                          <span>En İyi Uygulamalar ({analysisResults.bestPractices.score})</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <Progress value={analysisResults.bestPractices.score} className="h-2" />
+                        <div className="space-y-2">
+                          {analysisResults.bestPractices.issues.map((issue, index) => (
+                            <div key={index} className="flex items-center space-x-2 text-sm">
+                              {issue.type === 'success' ? (
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <AlertCircle className="h-4 w-4 text-yellow-500" />
+                              )}
+                              <span className="flex-1">{issue.message}</span>
+                              <Badge variant="outline" className="text-xs">{issue.impact}</Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button onClick={resetAnalysis} variant="outline">
+                      Yeni Analiz
+                    </Button>
+                    <Button>
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      Detaylı Rapor İndir
+                    </Button>
+                  </div>
                 </div>
               )}
             </CardContent>
