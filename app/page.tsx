@@ -1,5 +1,5 @@
 import Header from './components/Header';
-import Stats from './components/Stats';
+import Hero from './components/Hero';
 import Services from './components/Services';
 import Process from './components/Process';
 import Testimonials from './components/Testimonials';
@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Header />
+      <Hero />
       <main>
-        <Stats />
         <Services />
         <Process />
         <Testimonials />
