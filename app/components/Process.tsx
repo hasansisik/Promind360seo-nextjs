@@ -172,31 +172,6 @@ const Process = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center mt-16">
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="p-8">
-              <div className="flex items-center justify-center space-x-2 mb-4">
-                <Clock className="h-5 w-5 text-primary" />
-                <span className="text-sm font-medium text-primary">Hızlı Başlangıç</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-4">SEO Sürecinizi Başlatalım</h3>
-              <p className="text-muted-foreground mb-6">
-                İlk analiz raporunuzu 48 saat içinde alın ve SEO stratejinizi belirleyin.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Badge variant="outline" className="text-sm">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Ücretsiz Site Analizi
-                </Badge>
-                <Badge variant="outline" className="text-sm">
-                  <Target className="h-3 w-3 mr-1" />
-                  Özel Strateji
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </section>
   );

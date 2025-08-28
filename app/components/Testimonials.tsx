@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -152,7 +154,7 @@ const Testimonials = () => {
 
         {/* CTA Section */}
         <div className="text-center mt-16">
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-primary/1 to-primary/2 border-primary/20">
             <CardContent className="p-8">
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <Star className="h-5 w-5 text-primary" />

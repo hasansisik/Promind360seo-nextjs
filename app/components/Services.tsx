@@ -134,28 +134,6 @@ const Services = () => {
           ))}
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center mt-16">
-          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="p-8">
-              <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-4">Özel SEO Stratejinizi Oluşturalım</h3>
-              <p className="text-muted-foreground mb-6">
-                İşletmenize özel SEO stratejisi geliştirmek için uzman ekibimizle görüşün.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Badge variant="outline" className="text-sm">
-                  <Lightbulb className="h-3 w-3 mr-1" />
-                  Ücretsiz Danışmanlık
-                </Badge>
-                <Badge variant="outline" className="text-sm">
-                  <Zap className="h-3 w-3 mr-1" />
-                  Hızlı Başlangıç
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </section>
   );

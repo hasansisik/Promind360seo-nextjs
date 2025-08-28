@@ -29,21 +29,21 @@ const Footer = () => {
   ];
 
   const company = [
-    { name: 'Hakkımızda', href: '#about' },
-    { name: 'Ekibimiz', href: '#team' },
-    { name: 'Kariyer', href: '#careers' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Basın', href: '#press' },
-    { name: 'İletişim', href: '#contact' }
+    { name: 'Hakkımızda', href: '#hero' },
+    { name: 'Ekibimiz', href: '#hero' },
+    { name: 'Kariyer', href: '#hero' },
+    { name: 'Blog', href: '#hero' },
+    { name: 'Basın', href: '#hero' },
+    { name: 'İletişim', href: '#testimonials' }
   ];
 
   const resources = [
-    { name: 'SEO Rehberi', href: '#guide' },
-    { name: 'Vaka Çalışmaları', href: '#case-studies' },
-    { name: 'Webinar', href: '#webinars' },
-    { name: 'E-kitap', href: '#ebook' },
-    { name: 'Araçlar', href: '#tools' },
-    { name: 'Destek', href: '#support' }
+    { name: 'SEO Rehberi', href: '#process' },
+    { name: 'Vaka Çalışmaları', href: '#testimonials' },
+    { name: 'Webinar', href: '#hero' },
+    { name: 'E-kitap', href: '#hero' },
+    { name: 'Araçlar', href: '#services' },
+    { name: 'Destek', href: '#hero' }
   ];
 
   const socialLinks = [
@@ -59,6 +59,13 @@ const Footer = () => {
     { icon: Phone, value: '+90 (212) 555 0123', label: 'Telefon' },
     { icon: MapPin, value: 'İstanbul, Türkiye', label: 'Adres' }
   ];
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -115,12 +122,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {services.map((service, index) => (
                 <li key={index}>
-                  <Link 
-                    href={service.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  <button
+                    onClick={() => scrollToSection(service.href.replace('#', ''))}
+                    className="text-left text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {service.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -132,12 +139,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {company.map((item, index) => (
                 <li key={index}>
-                  <Link 
-                    href={item.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  <button
+                    onClick={() => scrollToSection(item.href.replace('#', ''))}
+                    className="text-left text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {item.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -149,12 +156,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {resources.map((resource, index) => (
                 <li key={index}>
-                  <Link 
-                    href={resource.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  <button
+                    onClick={() => scrollToSection(resource.href.replace('#', ''))}
+                    className="text-left text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {resource.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
