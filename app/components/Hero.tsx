@@ -42,9 +42,9 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
+    <section id="hero" className="relative flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 py-30">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center">
           {/* Main Heading */}
           <div className="space-y-4">
             <Badge variant="secondary" className="mb-4">
@@ -74,15 +74,9 @@ const Hero = () => {
           </div>
 
           {/* Analysis Form */}
-          <Card className="max-w-2xl mx-auto mt-12">
-            <CardContent className="p-6 space-y-4">
-              <div className="text-center space-y-2">
-                <h3 className="text-lg font-semibold">Ücretsiz SEO Analizi</h3>
-                <p className="text-sm text-muted-foreground">
-                  Web sitenizi analiz edelim ve SEO stratejinizi optimize edelim
-                </p>
-              </div>
-              
+          <Card className="max-w-4xl mx-auto mt-12">
+            <CardContent className=" space-y-4">
+
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-1 relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -121,14 +115,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-[50%] top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5" />
-          </div>
-        </div>
-      </div>
     </section>
   );
 };

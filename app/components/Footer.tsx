@@ -5,15 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { 
   Mail, 
-  Phone, 
-  MapPin, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Youtube,
-  ArrowUp,
-  Heart
+  MapPin
 } from 'lucide-react';
 
 const Footer = () => {
@@ -22,41 +14,22 @@ const Footer = () => {
   const services = [
     { name: 'SEO Optimizasyonu', href: '#services' },
     { name: 'Sosyal Medya Pazarlaması', href: '#services' },
+    { name: 'Tek Sayfa SEO', href: '#services' },
     { name: 'İçerik Pazarlaması', href: '#services' },
     { name: 'E-posta Pazarlaması', href: '#services' },
-    { name: 'Anahtar Kelime Araştırması', href: '#services' },
-    { name: 'Teknik SEO', href: '#services' }
+    { name: 'Anahtar Kelime Araştırması', href: '#services' }
   ];
 
-  const company = [
-    { name: 'Hakkımızda', href: '#hero' },
-    { name: 'Ekibimiz', href: '#hero' },
-    { name: 'Kariyer', href: '#hero' },
-    { name: 'Blog', href: '#hero' },
-    { name: 'Basın', href: '#hero' },
-    { name: 'İletişim', href: '#testimonials' }
-  ];
-
-  const resources = [
-    { name: 'SEO Rehberi', href: '#process' },
-    { name: 'Vaka Çalışmaları', href: '#testimonials' },
-    { name: 'Webinar', href: '#hero' },
-    { name: 'E-kitap', href: '#hero' },
-    { name: 'Araçlar', href: '#services' },
-    { name: 'Destek', href: '#hero' }
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Youtube, href: '#', label: 'YouTube' }
+  const process = [
+    { name: 'Analiz & Araştırma', href: '#process' },
+    { name: 'Strateji Geliştirme', href: '#process' },
+    { name: 'Teknik Optimizasyon', href: '#process' },
+    { name: 'İçerik Optimizasyonu', href: '#process' },
+    { name: 'İzleme & Raporlama', href: '#process' }
   ];
 
   const contactInfo = [
     { icon: Mail, value: 'info@promind360.com', label: 'E-posta' },
-    { icon: Phone, value: '+90 (212) 555 0123', label: 'Telefon' },
     { icon: MapPin, value: 'İstanbul, Türkiye', label: 'Adres' }
   ];
 
@@ -67,15 +40,11 @@ const Footer = () => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <footer className="bg-muted/50 border-t">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center space-x-2">
@@ -100,20 +69,6 @@ const Footer = () => {
                 </div>
               ))}
             </div>
-
-            {/* Social Links */}
-            <div className="flex space-x-3">
-              {socialLinks.map((social, index) => (
-                <Link
-                  key={index}
-                  href={social.href}
-                  className="p-2 rounded-lg bg-background hover:bg-primary/10 transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors" />
-                </Link>
-              ))}
-            </div>
           </div>
 
           {/* Services */}
@@ -133,34 +88,17 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Process */}
           <div>
-            <h3 className="font-semibold mb-4">Şirket</h3>
+            <h3 className="font-semibold mb-4">Süreç</h3>
             <ul className="space-y-2">
-              {company.map((item, index) => (
+              {process.map((item, index) => (
                 <li key={index}>
                   <button
                     onClick={() => scrollToSection(item.href.replace('#', ''))}
                     className="text-left text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {item.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 className="font-semibold mb-4">Kaynaklar</h3>
-            <ul className="space-y-2">
-              {resources.map((resource, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => scrollToSection(resource.href.replace('#', ''))}
-                    className="text-left text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {resource.name}
                   </button>
                 </li>
               ))}
@@ -175,31 +113,30 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-muted-foreground">
             <span>© {currentYear} Promind360. Tüm hakları saklıdır.</span>
             <div className="flex items-center space-x-4">
-              <Link href="#privacy" className="hover:text-primary transition-colors">
+              <Link href="/privacy" className="hover:text-primary transition-colors">
                 Gizlilik Politikası
               </Link>
-              <Link href="#terms" className="hover:text-primary transition-colors">
+              <Link href="/terms" className="hover:text-primary transition-colors">
                 Kullanım Şartları
               </Link>
-              <Link href="#cookies" className="hover:text-primary transition-colors">
+              <Link href="/cookies" className="hover:text-primary transition-colors">
                 Çerez Politikası
               </Link>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <Badge variant="outline" className="text-xs">
-              <Heart className="h-3 w-3 mr-1" />
-              Türkiye'de Üretildi
-            </Badge>
-            
-            <button
-              onClick={scrollToTop}
-              className="p-2 rounded-lg bg-background hover:bg-primary/10 transition-colors"
-              aria-label="Yukarı çık"
+            <Link 
+              href="https://birimajans.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 hover:text-primary transition-colors"
             >
-              <ArrowUp className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors" />
-            </button>
+              <Badge variant="outline" className="text-xs">
+                <span className="font-bold text-primary">B</span>
+                <span className="ml-1">Birimajans</span>
+              </Badge>
+            </Link>
           </div>
         </div>
       </div>
