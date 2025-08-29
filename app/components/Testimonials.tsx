@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Star, Quote, TrendingUp, Users, Award } from 'lucide-react';
 
 const Testimonials = () => {
@@ -138,7 +138,7 @@ const Testimonials = () => {
               
               <CardContent className="pt-0">
                 <CardDescription className="text-sm leading-relaxed">
-                  "{testimonial.content}"
+                  &ldquo;{testimonial.content}&rdquo;
                 </CardDescription>
               </CardContent>
             </Card>

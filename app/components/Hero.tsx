@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { analyzeSEO, resetSEOData } from '@/redux/actions/seoActions';
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, Clock, BarChart3, Globe, Smartphone, Monitor, Lightbulb } from 'lucide-react';
+import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, BarChart3, Globe, Smartphone, Lightbulb } from 'lucide-react';
 
   const Hero = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +21,6 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
     pageSpeedData, 
     combinedReport,
     errors, 
-    isLoading, 
     isAnalyzing, 
     progress, 
     currentStep, 
@@ -265,44 +264,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
     { icon: Target, title: 'Sektör Odaklı', description: 'Özel SEO önerileri' }
   ];
 
-  // Mock analysis results
-  const analysisResults = {
-    seo: {
-      score: 78,
-      title: 'SEO Optimizasyonu',
-      issues: [
-        { type: 'error', message: 'Meta description eksik', impact: 'Yüksek' },
-        { type: 'warning', message: 'H1 etiketi fazla kullanılmış', impact: 'Orta' },
-        { type: 'success', message: 'Alt etiketleri mevcut', impact: 'Düşük' }
-      ]
-    },
-    performance: {
-      score: 85,
-      title: 'Performans',
-      metrics: [
-        { name: 'First Contentful Paint', value: '1.2s', status: 'good' },
-        { name: 'Largest Contentful Paint', value: '2.8s', status: 'good' },
-        { name: 'Cumulative Layout Shift', value: '0.05', status: 'good' },
-        { name: 'First Input Delay', value: '45ms', status: 'good' }
-      ]
-    },
-    accessibility: {
-      score: 92,
-      title: 'Erişilebilirlik',
-      issues: [
-        { type: 'success', message: 'Renk kontrastı uygun', impact: 'Düşük' },
-        { type: 'warning', message: 'Alt etiketleri eksik', impact: 'Orta' }
-      ]
-    },
-    bestPractices: {
-      score: 88,
-      title: 'En İyi Uygulamalar',
-      issues: [
-        { type: 'success', message: 'HTTPS kullanılıyor', impact: 'Düşük' },
-        { type: 'warning', message: 'Console hataları mevcut', impact: 'Orta' }
-      ]
-    }
-  };
+
 
   const handleAnalyze = async () => {
     if (websiteUrl) {
@@ -330,7 +292,6 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
       ];
 
       // Create a race between progress simulation and actual API completion
-      let apiCompleted = false;
       let progressCompleted = false;
 
       // Start progress simulation in background
@@ -358,8 +319,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
       // Start the actual API analysis and wait for it to complete
       try {
-        const result = await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
-        apiCompleted = true;
+        await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
         
 
         // Wait for progress simulation to complete
@@ -369,7 +329,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
         // Show results immediately after progress is complete
         setShowResults(true);
-      } catch (error) {
+      } catch {
         
         // Wait for progress simulation to complete
         if (!progressCompleted) {

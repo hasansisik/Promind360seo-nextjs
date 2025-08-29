@@ -4,14 +4,11 @@ import {
   Search, 
   TrendingUp, 
   FileText, 
-  PenTool, 
-  Mail, 
   Target,
   BarChart3,
   Globe,
   Users,
   Zap,
-  Shield,
   Lightbulb
 } from 'lucide-react';
 

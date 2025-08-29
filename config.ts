@@ -1,3 +1,3 @@
 // Backend server URL
-export const server = "http://localhost:3040/v1";
+export const server = "https://promind360seo-backend.vercel.app/v1";
 

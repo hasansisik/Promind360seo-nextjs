@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { server } from "@/config";
 
 interface SEOAnalysisPayload {
   url: string;
@@ -134,7 +135,7 @@ export const analyzeSEO = createAsyncThunk(
       // First, make SEO analysis call (faster)
       try {
 
-        const seoResponse = await axios.get(`http://localhost:3040/v1/seo/analyze?url=${encodeURIComponent(url)}`);
+        const seoResponse = await axios.get(`${server}/seo/analyze?url=${encodeURIComponent(url)}`);
         const seoResult = seoResponse.data;
         if (seoResult.success) {
           result.seoData = seoResult.data;
@@ -152,7 +153,7 @@ export const analyzeSEO = createAsyncThunk(
       // Then, make On-Page SEO analysis call
       try {
 
-        const onPageResponse = await axios.get(`http://localhost:3040/v1/seo/onpage?url=${encodeURIComponent(url)}`);
+        const onPageResponse = await axios.get(`${server}/seo/onpage?url=${encodeURIComponent(url)}`);
         const onPageResult = onPageResponse.data;
         if (onPageResult.success) {
           result.onPageData = onPageResult.data;
@@ -170,7 +171,7 @@ export const analyzeSEO = createAsyncThunk(
       // Finally, make PageSpeed analysis call (slower, but we wait for it)
       try {
 
-        const pageSpeedResponse = await axios.get(`http://localhost:3040/v1/seo/pagespeed?url=${encodeURIComponent(url)}`);
+        const pageSpeedResponse = await axios.get(`${server}/seo/pagespeed?url=${encodeURIComponent(url)}`);
         const pageSpeedResult = pageSpeedResponse.data;
         if (pageSpeedResult.success) {
           result.pageSpeedData = pageSpeedResult.data;

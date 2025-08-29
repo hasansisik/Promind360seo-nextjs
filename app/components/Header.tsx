@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useState } from 'react';
 
 const Header = () => {
@@ -57,8 +56,8 @@ const Header = () => {
             </NavigationMenuList>
           </NavigationMenu>
           
-          <Button onClick={() => scrollToSection('testimonials')}>
-            Ücretsiz Analiz
+          <Button onClick={() => scrollToSection('hero')}>
+            Analiz
           </Button>
         </nav>
 
@@ -82,10 +81,10 @@ const Header = () => {
                 </button>
               ))}
               <Button 
-                onClick={() => scrollToSection('testimonials')}
+                onClick={() => scrollToSection('hero')}
                 className="mt-4 justify-start"
               >
-                Ücretsiz Analiz
+                Analiz
               </Button>
             </nav>
           </SheetContent>
