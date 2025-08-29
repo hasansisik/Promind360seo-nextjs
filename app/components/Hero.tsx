@@ -62,8 +62,215 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
     { value: 'law', label: 'Hukuk' },
     { value: 'sports', label: 'Spor' },
     { value: 'media', label: 'Medya' },
-    { value: 'other', label: 'Diğer' }
   ];
+
+  // Sektör bazlı özel yorumlar
+  const sectorInsights = {
+    ecommerce: {
+      title: 'E-ticaret Sektörü Özel Analizi',
+      insights: [
+        'E-ticaret siteleri için sayfa yükleme hızı kritik öneme sahiptir. Müşteriler 3 saniyeden fazla beklemek istemez.',
+        'Ürün sayfalarında detaylı meta açıklamaları ve optimize edilmiş görseller satış oranlarını artırır.',
+        'Mobil uyumluluk e-ticaret başarısının %60\'ını oluşturur.',
+        'Güvenlik sertifikaları (SSL, PCI DSS) müşteri güvenini artırır.',
+        'Arama motoru optimizasyonu ile organik trafik %40 artabilir.'
+      ],
+      recommendations: [
+        'Ürün sayfalarında schema markup kullanın',
+        'Hızlı ödeme süreçleri için optimize edin',
+        'Mobil-first tasarım yaklaşımı benimseyin',
+        'Ürün görsellerini WebP formatında optimize edin',
+        'Müşteri yorumları için yapılandırılmış veri ekleyin'
+      ]
+    },
+    health: {
+      title: 'Sağlık Sektörü Özel Analizi',
+      insights: [
+        'Sağlık siteleri için güvenilirlik ve uzmanlık göstergeleri kritiktir.',
+        'HIPAA uyumluluğu ve veri güvenliği hasta gizliliği için şarttır.',
+        'Doktor profilleri ve randevu sistemleri SEO performansını artırır.',
+        'Tıbbi içerikler için E-A-T (Expertise, Authoritativeness, Trustworthiness) faktörleri önemlidir.',
+        'Mobil erişilebilirlik yaşlı hastalar için kritik öneme sahiptir.'
+      ],
+      recommendations: [
+        'Doktor ve uzman profillerini optimize edin',
+        'Tıbbi içerikler için schema markup kullanın',
+        'Randevu alma sürecini basitleştirin',
+        'Güvenlik sertifikalarını görünür şekilde gösterin',
+        'Hasta eğitim materyalleri ekleyin'
+      ]
+    },
+    education: {
+      title: 'Eğitim Sektörü Özel Analizi',
+      insights: [
+        'Eğitim kurumları için yerel SEO ve organik arama kritik öneme sahiptir.',
+        'Öğrenci ve veli odaklı içerik stratejisi başarıyı artırır.',
+        'Program ve kurs sayfaları için detaylı meta açıklamaları gerekli.',
+        'Mobil uyumluluk öğrenci erişimi için şarttır.',
+        'Sosyal kanıtlar (mezun başarıları, referanslar) güven oluşturur.'
+      ],
+      recommendations: [
+        'Program sayfalarını detaylandırın',
+        'Öğrenci başarı hikayeleri ekleyin',
+        'Yerel SEO optimizasyonu yapın',
+        'Online başvuru sürecini optimize edin',
+        'Eğitim içerikleri için blog bölümü oluşturun'
+      ]
+    },
+    finance: {
+      title: 'Finans Sektörü Özel Analizi',
+      insights: [
+        'Finansal hizmetler için güvenlik ve şeffaflık en önemli faktörlerdir.',
+        'SSL sertifikası ve güvenlik göstergeleri zorunludur.',
+        'Hesaplama araçları ve finansal içerikler organik trafiği artırır.',
+        'Mobil bankacılık uygulamaları için optimize edilmiş web siteleri gerekli.',
+        'Regülasyon uyumluluğu ve lisans bilgileri görünür olmalıdır.'
+      ],
+      recommendations: [
+        'Güvenlik sertifikalarını öne çıkarın',
+        'Finansal hesaplama araçları ekleyin',
+        'Mobil ödeme süreçlerini optimize edin',
+        'Regülasyon uyumluluğu bilgilerini gösterin',
+        'Müşteri hizmetleri erişimini kolaylaştırın'
+      ]
+    },
+    technology: {
+      title: 'Teknoloji Sektörü Özel Analizi',
+      insights: [
+        'Teknoloji şirketleri için yenilikçilik ve teknik uzmanlık öne çıkmalıdır.',
+        'API dokümantasyonu ve teknik içerikler organik trafiği artırır.',
+        'Hızlı sayfa yükleme süreleri teknik kullanıcılar için kritiktir.',
+        'GitHub entegrasyonu ve açık kaynak projeler güven oluşturur.',
+        'Teknik blog ve case study\'ler uzmanlık gösterir.'
+      ],
+      recommendations: [
+        'API dokümantasyonunu optimize edin',
+        'Teknik blog içerikleri oluşturun',
+        'Açık kaynak projeleri öne çıkarın',
+        'Case study\'ler ekleyin',
+        'Teknik webinar ve eğitim içerikleri sunun'
+      ]
+    },
+    tourism: {
+      title: 'Turizm Sektörü Özel Analizi',
+      insights: [
+        'Turizm siteleri için görsel içerik ve yerel SEO kritik öneme sahiptir.',
+        'Rezervasyon sistemleri ve fiyat karşılaştırmaları dönüşüm oranlarını artırır.',
+        'Mobil uyumluluk seyahat planlaması için şarttır.',
+        'Müşteri yorumları ve fotoğraflar güven oluşturur.',
+        'Yerel arama optimizasyonu turizm işletmeleri için kritiktir.'
+      ],
+      recommendations: [
+        'Yüksek kaliteli görseller ekleyin',
+        'Rezervasyon sürecini basitleştirin',
+        'Müşteri yorumlarını öne çıkarın',
+        'Yerel SEO optimizasyonu yapın',
+        'Seyahat rehberleri ve blog içerikleri oluşturun'
+      ]
+    },
+    food: {
+      title: 'Gıda Sektörü Özel Analizi',
+      insights: [
+        'Gıda işletmeleri için yerel arama ve menü optimizasyonu kritiktir.',
+        'Görsel içerik ve yemek fotoğrafları dönüşüm oranlarını artırır.',
+        'Online sipariş sistemleri ve teslimat bilgileri önemlidir.',
+        'Müşteri yorumları ve sosyal medya entegrasyonu güven oluşturur.',
+        'Mobil uyumluluk anlık siparişler için şarttır.'
+      ],
+      recommendations: [
+        'Menü sayfalarını optimize edin',
+        'Yüksek kaliteli yemek fotoğrafları ekleyin',
+        'Online sipariş sürecini basitleştirin',
+        'Yerel SEO optimizasyonu yapın',
+        'Müşteri yorumlarını öne çıkarın'
+      ]
+    },
+    fashion: {
+      title: 'Moda Sektörü Özel Analizi',
+      insights: [
+        'Moda siteleri için görsel içerik ve ürün kategorileri kritik öneme sahiptir.',
+        'Mobil uyumluluk ve hızlı sayfa yükleme alışveriş deneyimini artırır.',
+        'Sosyal medya entegrasyonu ve influencer işbirlikleri organik trafiği artırır.',
+        'Ürün filtreleme ve arama özellikleri kullanıcı deneyimini iyileştirir.',
+        'Sezonsal içerik ve trend analizleri SEO performansını artırır.'
+      ],
+      recommendations: [
+        'Ürün görsellerini optimize edin',
+        'Gelişmiş filtreleme özellikleri ekleyin',
+        'Sosyal medya entegrasyonu yapın',
+        'Sezonsal içerik stratejisi oluşturun',
+        'Mobil alışveriş deneyimini iyileştirin'
+      ]
+    },
+    'real-estate': {
+      title: 'Emlak Sektörü Özel Analizi',
+      insights: [
+        'Emlak siteleri için görsel içerik ve detaylı mülk bilgileri kritiktir.',
+        'Arama filtreleri ve harita entegrasyonu kullanıcı deneyimini artırır.',
+        'Mobil uyumluluk anlık mülk aramaları için şarttır.',
+        'Müşteri yorumları ve referanslar güven oluşturur.',
+        'Yerel SEO ve organik arama emlak işletmeleri için kritiktir.'
+      ],
+      recommendations: [
+        'Mülk fotoğraflarını optimize edin',
+        'Gelişmiş arama filtreleri ekleyin',
+        'Harita entegrasyonu yapın',
+        'Müşteri referanslarını öne çıkarın',
+        'Yerel SEO optimizasyonu yapın'
+      ]
+    },
+    law: {
+      title: 'Hukuk Sektörü Özel Analizi',
+      insights: [
+        'Hukuk firmaları için uzmanlık alanları ve başarı hikayeleri kritiktir.',
+        'Güvenilirlik ve profesyonellik göstergeleri müşteri güvenini artırır.',
+        'Blog içerikleri ve yasal rehberler organik trafiği artırır.',
+        'İletişim bilgileri ve randevu sistemleri erişilebilirliği artırır.',
+        'Yerel SEO ve organik arama hukuk hizmetleri için kritiktir.'
+      ],
+      recommendations: [
+        'Uzmanlık alanlarını detaylandırın',
+        'Başarı hikayeleri ve case study\'ler ekleyin',
+        'Yasal blog içerikleri oluşturun',
+        'İletişim süreçlerini basitleştirin',
+        'Yerel SEO optimizasyonu yapın'
+      ]
+    },
+    sports: {
+      title: 'Spor Sektörü Özel Analizi',
+      insights: [
+        'Spor siteleri için canlı skorlar ve maç sonuçları kritik öneme sahiptir.',
+        'Mobil uyumluluk anlık spor bilgileri için şarttır.',
+        'Sosyal medya entegrasyonu ve fan etkileşimi organik trafiği artırır.',
+        'Spor ekipmanları ve giyim satışı için e-ticaret optimizasyonu gerekli.',
+        'Spor haberleri ve analiz içerikleri SEO performansını artırır.'
+      ],
+      recommendations: [
+        'Canlı skor sistemleri ekleyin',
+        'Sosyal medya entegrasyonu yapın',
+        'Spor ekipmanları satışını optimize edin',
+        'Spor haberleri ve analiz içerikleri oluşturun',
+        'Fan etkileşimini artıracak özellikler ekleyin'
+      ]
+    },
+    media: {
+      title: 'Medya Sektörü Özel Analizi',
+      insights: [
+        'Medya siteleri için hızlı içerik yayını ve güncel haberler kritiktir.',
+        'Mobil uyumluluk anlık haber erişimi için şarttır.',
+        'Video içerikleri ve multimedya özellikler kullanıcı etkileşimini artırır.',
+        'Sosyal medya entegrasyonu ve paylaşım özellikleri organik trafiği artırır.',
+        'SEO optimizasyonu ve içerik stratejisi medya başarısının temelidir.'
+      ],
+      recommendations: [
+        'Hızlı içerik yayın sistemleri kurun',
+        'Video içerikleri optimize edin',
+        'Sosyal medya entegrasyonu yapın',
+        'İçerik paylaşım özellikleri ekleyin',
+        'SEO optimizasyonu ve içerik stratejisi geliştirin'
+      ]
+    }
+  };
 
   const features = [
     { icon: TrendingUp, title: 'Veri Odaklı', description: 'Analitik tabanlı stratejiler' },
@@ -131,8 +338,8 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
         { progress: 72, message: 'Performans metrikleri ölçülüyor...' },
         { progress: 80, message: 'Erişilebilirlik kontrol ediliyor...' },
         { progress: 88, message: 'En İyi Uygulamalar analiz ediliyor...' },
-        { progress: 96, message: 'Rapor hazırlanıyor...' },
-        { progress: 100, message: 'Analiz tamamlandı!' }
+        { progress: 96, message: 'Analiz tamamlandı!' },
+        { progress: 100, message: 'Rapor hazırlanıyor... ' }
       ];
 
       // Create a race between progress simulation and actual API completion
@@ -878,6 +1085,88 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                     </Button>
                    
                   </div>
+
+                  {/* Sektör Bazlı Özel Yorum */}
+                  {selectedSector && selectedSector !== 'other' && sectorInsights[selectedSector as keyof typeof sectorInsights] && (
+                    <Card className="border-blue-200 bg-blue-50">
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2 text-blue-800">
+                          <Target className="h-5 w-5" />
+                          <span>{sectorInsights[selectedSector as keyof typeof sectorInsights].title}</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {/* Sektör İçgörüleri */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör İçgörüleri:</h4>
+                          <div className="space-y-2">
+                            {sectorInsights[selectedSector as keyof typeof sectorInsights].insights.map((insight, index) => (
+                              <div key={index} className="flex items-start space-x-2 text-sm">
+                                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <span className="text-blue-800 leading-relaxed">{insight}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Sektör Önerileri */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör Özel Önerileri:</h4>
+                          <div className="space-y-2">
+                            {sectorInsights[selectedSector as keyof typeof sectorInsights].recommendations.map((recommendation, index) => (
+                              <div key={index} className="flex items-start space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-blue-800 leading-relaxed">{recommendation}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Sektör Skor Değerlendirmesi */}
+                        <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
+                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör Bazlı Değerlendirme:</h4>
+                          <div className="text-sm text-blue-800 space-y-1">
+                            {selectedSector === 'ecommerce' && (
+                              <p>E-ticaret siteniz için özellikle <strong>sayfa yükleme hızı</strong> ve <strong>mobil uyumluluk</strong> kritik öneme sahiptir. Mevcut performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 70 ? 'kabul edilebilir' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'health' && (
+                              <p>Sağlık sektöründe <strong>güvenilirlik</strong> ve <strong>erişilebilirlik</strong> en önemli faktörlerdir. Erişilebilirlik skorunuz {pageSpeedData?.report?.accessibilityScore || 0}/100, bu sektör için {pageSpeedData?.report?.accessibilityScore >= 80 ? 'uygun' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'education' && (
+                              <p>Eğitim sektöründe <strong>yerel SEO</strong> ve <strong>organik arama</strong> kritik öneme sahiptir. SEO skorunuz {seoData?.report?.overallScore || 0}/100, bu sektör için {seoData?.report?.overallScore >= 75 ? 'iyi' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'finance' && (
+                              <p>Finans sektöründe <strong>güvenlik</strong> ve <strong>şeffaflık</strong> en önemli faktörlerdir. Genel skorunuz {combinedReport?.overallScore || 0}/100, bu sektör için {combinedReport?.overallScore >= 80 ? 'güvenilir' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'technology' && (
+                              <p>Teknoloji sektöründe <strong>hızlı sayfa yükleme</strong> ve <strong>teknik içerik</strong> kritik öneme sahiptir. Performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 85 ? 'mükemmel' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'tourism' && (
+                              <p>Turizm sektöründe <strong>görsel içerik</strong> ve <strong>yerel SEO</strong> kritik öneme sahiptir. On-page SEO skorunuz {onPageData?.report?.overallScore || 0}/100, bu sektör için {onPageData?.report?.overallScore >= 70 ? 'iyi' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'food' && (
+                              <p>Gıda sektöründe <strong>yerel arama</strong> ve <strong>mobil uyumluluk</strong> kritik öneme sahiptir. Erişilebilirlik skorunuz {pageSpeedData?.report?.accessibilityScore || 0}/100, bu sektör için {pageSpeedData?.report?.accessibilityScore >= 75 ? 'uygun' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'fashion' && (
+                              <p>Moda sektöründe <strong>görsel içerik</strong> ve <strong>mobil alışveriş deneyimi</strong> kritik öneme sahiptir. Performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 75 ? 'iyi' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'real-estate' && (
+                              <p>Emlak sektöründe <strong>görsel içerik</strong> ve <strong>mobil uyumluluk</strong> kritik öneme sahiptir. On-page SEO skorunuz {onPageData?.report?.overallScore || 0}/100, bu sektör için {onPageData?.report?.overallScore >= 70 ? 'iyi' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'law' && (
+                              <p>Hukuk sektöründe <strong>güvenilirlik</strong> ve <strong>organik arama</strong> kritik öneme sahiptir. SEO skorunuz {seoData?.report?.overallScore || 0}/100, bu sektör için {seoData?.report?.overallScore >= 80 ? 'güvenilir' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'sports' && (
+                              <p>Spor sektöründe <strong>mobil uyumluluk</strong> ve <strong>anlık içerik</strong> kritik öneme sahiptir. Performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 80 ? 'iyi' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                            {selectedSector === 'media' && (
+                              <p>Medya sektöründe <strong>hızlı içerik yayını</strong> ve <strong>mobil uyumluluk</strong> kritik öneme sahiptir. Performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 85 ? 'mükemmel' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               )}
             </CardContent>
