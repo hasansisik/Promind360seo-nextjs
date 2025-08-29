@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import FloatingUpButton from "./components/FloatingUpButton";
+import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <FloatingUpButton />
+          <FloatingWhatsAppButton />
         </Providers>
       </body>
     </html>
