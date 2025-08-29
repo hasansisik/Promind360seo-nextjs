@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import FloatingUpButton from "./components/FloatingUpButton";
+import { Providers } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,8 +29,10 @@ export default function RootLayout({
   return (
     <html lang="tr" className="scroll-smooth">
       <body className={`${inter.variable} font-sans antialiased bg-background text-foreground`}>
-        {children}
-        <FloatingUpButton />
+        <Providers>
+          {children}
+          <FloatingUpButton />
+        </Providers>
       </body>
     </html>
   );
