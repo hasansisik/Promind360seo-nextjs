@@ -6,6 +6,15 @@ interface SEOAnalysisPayload {
   sector?: string;
 }
 
+interface SEOReport {
+  overallScore: number;
+  scoreLevel: string;
+  scoreColor: string;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
+}
+
 interface SEOData {
   url: string;
   robots_found: boolean;
@@ -14,6 +23,16 @@ interface SEOData {
   suggestions: string[];
   timestamp: string;
   isMockData: boolean;
+  report?: SEOReport;
+}
+
+interface PageSpeedReport {
+  overallScore: number;
+  scoreLevel: string;
+  scoreColor: string;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
 }
 
 interface PageSpeedData {
@@ -28,6 +47,7 @@ interface PageSpeedData {
   };
   timestamp: string;
   isMockData: boolean;
+  report?: PageSpeedReport;
 }
 
 interface SEOAnalysisResult {
@@ -67,10 +87,17 @@ export const analyzeSEO = createAsyncThunk(
           console.log('SEO analysis completed successfully');
         } else {
           result.errors.seo = seoResult.message;
+          console.error('SEO API returned error:', seoResult.message);
         }
       } catch (error: any) {
-        result.errors.seo = error.response?.data?.message || error.message || 'SEO analysis failed';
-        console.error('SEO analysis error:', result.errors.seo);
+        const errorMessage = error.response?.data?.message || error.message || 'SEO analysis failed';
+        result.errors.seo = errorMessage;
+        console.error('SEO analysis error:', errorMessage);
+        
+        // If both APIs fail, throw error to show to user
+        if (!result.seoData && !result.pageSpeedData) {
+          throw new Error(`SEO API Hatası: ${errorMessage}`);
+        }
       }
 
       // Then, make PageSpeed analysis call (slower, but we wait for it)
@@ -83,10 +110,17 @@ export const analyzeSEO = createAsyncThunk(
           console.log('PageSpeed analysis completed successfully');
         } else {
           result.errors.pageSpeed = pageSpeedResult.message;
+          console.error('PageSpeed API returned error:', pageSpeedResult.message);
         }
       } catch (error: any) {
-        result.errors.pageSpeed = error.response?.data?.message || error.message || 'PageSpeed analysis failed';
-        console.error('PageSpeed analysis error:', result.errors.pageSpeed);
+        const errorMessage = error.response?.data?.message || error.message || 'PageSpeed analysis failed';
+        result.errors.pageSpeed = errorMessage;
+        console.error('PageSpeed analysis error:', errorMessage);
+        
+        // If both APIs fail, throw error to show to user
+        if (!result.seoData && !result.pageSpeedData) {
+          throw new Error(`PageSpeed API Hatası: ${errorMessage}`);
+        }
       }
 
       // Create combined report
@@ -94,9 +128,9 @@ export const analyzeSEO = createAsyncThunk(
         overallScore: 0,
         scoreLevel: 'kötü',
         scoreColor: 'red',
-        strengths: [],
-        weaknesses: [],
-        recommendations: []
+        strengths: [] as string[],
+        weaknesses: [] as string[],
+        recommendations: [] as string[]
       };
 
       // Combine SEO and PageSpeed reports

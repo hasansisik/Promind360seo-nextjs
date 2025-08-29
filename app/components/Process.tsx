@@ -18,51 +18,51 @@ const Process = () => {
   const steps = [
     {
       icon: Search,
-      title: 'Analiz & Araştırma',
-      description: 'Web sitenizi ve rakiplerinizi detaylı analiz ediyoruz.',
-      duration: '1-2 Hafta',
-      features: ['Site audit', 'Rakip analizi', 'Anahtar kelime araştırması'],
+      title: 'URL Girişi & Doğrulama',
+      description: 'Analiz edilecek web sitesinin URL\'sini giriyor ve geçerliliğini kontrol ediyoruz.',
+      duration: 'Anında',
+      features: ['URL format kontrolü', 'Site erişim testi', 'Protokol doğrulama'],
       color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: BarChart3,
-      title: 'Strateji Geliştirme',
-      description: 'Veri odaklı SEO stratejinizi oluşturuyoruz.',
-      duration: '1 Hafta',
-      features: ['Hedef belirleme', 'Strateji planlaması', 'Timeline oluşturma'],
+      title: 'SEO API Analizi',
+      description: 'RapidAPI üzerinden kapsamlı SEO denetimi gerçekleştiriyoruz.',
+      duration: '30-60 Saniye',
+      features: ['Meta tag analizi', 'İçerik değerlendirmesi', 'Teknik SEO kontrolü'],
       color: 'from-purple-500 to-pink-500'
     },
     {
       icon: Settings,
-      title: 'Teknik Optimizasyon',
-      description: 'Site hızı ve teknik SEO sorunlarını çözüyoruz.',
-      duration: '2-3 Hafta',
-      features: ['Hız optimizasyonu', 'Meta tag düzenleme', 'Schema markup'],
+      title: 'PageSpeed Testi',
+      description: 'Google PageSpeed Insights ile site performansını ölçüyoruz.',
+      duration: '1-2 Dakika',
+      features: ['Hız analizi', 'Performans skoru', 'Optimizasyon önerileri'],
       color: 'from-green-500 to-emerald-500'
     },
     {
       icon: FileText,
-      title: 'İçerik Optimizasyonu',
-      description: 'SEO dostu içerikler oluşturuyoruz.',
-      duration: 'Sürekli',
-      features: ['Blog yazıları', 'Sayfa optimizasyonu', 'İçerik stratejisi'],
+      title: 'Veri İşleme & Analiz',
+      description: 'Toplanan verileri işleyerek detaylı SEO raporu oluşturuyoruz.',
+      duration: 'Anında',
+      features: ['Veri birleştirme', 'Skor hesaplama', 'Rapor oluşturma'],
       color: 'from-orange-500 to-red-500'
     },
     {
       icon: TrendingUp,
-      title: 'İzleme & Raporlama',
-      description: 'Performansınızı sürekli izliyor ve raporluyoruz.',
-      duration: 'Aylık',
-      features: ['Google Analytics', 'Search Console', 'Detaylı raporlar'],
+      title: 'Sonuç Gösterimi',
+      description: 'Kapsamlı SEO analiz sonuçlarını görsel olarak sunuyoruz.',
+      duration: 'Anında',
+      features: ['Görsel raporlar', 'Skor kartları', 'İyileştirme önerileri'],
       color: 'from-indigo-500 to-purple-500'
     }
   ];
 
   const benefits = [
-    { icon: CheckCircle2, text: '30 günde ilk sonuçlar' },
-    { icon: Target, text: 'Hedef odaklı stratejiler' },
-    { icon: Zap, text: 'Hızlı optimizasyon' },
-    { icon: Clock, text: '7/24 destek' }
+    { icon: CheckCircle2, text: 'Anında sonuç' },
+    { icon: Target, text: 'Gerçek zamanlı analiz' },
+    { icon: Zap, text: 'Hızlı işlem' },
+    { icon: Clock, text: '7/24 erişim' }
   ];
 
   return (
@@ -71,16 +71,16 @@ const Process = () => {
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
           <Badge variant="secondary" className="mb-4">
-            Çalışma Sürecimiz
+            SEO Analiz Süreci
           </Badge>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
             SEO{' '}
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Sürecimiz
+              Analiz Süreci
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Sistematik yaklaşımımızla SEO başarınızı garanti altına alıyoruz.
+            Sitenizin SEO performansını analiz etmek için izlediğimiz adımlar.
           </p>
         </div>
 

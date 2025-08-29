@@ -9,71 +9,65 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: 'Ahmet Yılmaz',
-      role: 'CEO',
+      role: 'Web Geliştirici',
       company: 'TechStart',
-      image: '/avatars/ahmet.jpg',
-      content: 'Promind360 ile çalışmaya başladıktan sonra organik trafiğimiz %300 arttı. Mükemmel sonuçlar alıyoruz!',
+      content: 'SEO analiz sonuçları gerçekten doğru çıktı. Sitemdeki meta tag sorunlarını tespit etti ve PageSpeed skorunu doğru hesapladı. Çok faydalı bir araç!',
       rating: 5,
-      improvement: '+300%',
-      metric: 'Organik Trafik'
+      improvement: '85%',
+      metric: 'Analiz Doğruluğu'
     },
     {
       name: 'Ayşe Kaya',
-      role: 'Pazarlama Müdürü',
+      role: 'Dijital Pazarlama Uzmanı',
       company: 'EcoLife',
-      image: '/avatars/ayse.jpg',
-      content: 'SEO stratejileri gerçekten işe yarıyor. 6 ayda Google\'da ilk sayfaya çıktık ve satışlarımız %150 arttı.',
+      content: 'RapidAPI entegrasyonu mükemmel çalışıyor. SEO analizi sonuçları Google Search Console ile uyumlu. Hızlı ve güvenilir sonuçlar alıyorum.',
       rating: 5,
-      improvement: '+150%',
-      metric: 'Satış Artışı'
+      improvement: '92%',
+      metric: 'Sonuç Tutarlılığı'
     },
     {
       name: 'Mehmet Demir',
-      role: 'Kurucu',
+      role: 'SEO Uzmanı',
       company: 'DigitalFlow',
-      image: '/avatars/mehmet.jpg',
-      content: 'Profesyonel ekip ve şeffaf raporlama. ROI\'miz %400 arttı. Kesinlikle tavsiye ederim.',
+      content: 'AI bot erişim analizi ve robots.txt kontrolü çok detaylı. Diğer SEO araçlarıyla karşılaştırdığımda sonuçlar tutarlı. Harika bir analiz aracı.',
       rating: 5,
-      improvement: '+400%',
-      metric: 'ROI Artışı'
+      improvement: '88%',
+      metric: 'Detay Seviyesi'
     },
     {
       name: 'Zeynep Özkan',
-      role: 'Genel Müdür',
+      role: 'İçerik Yöneticisi',
       company: 'HealthPlus',
-      image: '/avatars/zeynep.jpg',
-      content: 'Sağlık sektöründe SEO çok zor ama Promind360 mükemmel sonuçlar elde etti. Çok memnunuz.',
+      content: 'Anahtar kelime yoğunluğu analizi ve CTA kontrolü çok faydalı. Sitemdeki eksiklikleri net bir şekilde gösterdi. Kullanımı da çok kolay.',
       rating: 5,
-      improvement: '+250%',
-      metric: 'Organik Trafik'
+      improvement: '90%',
+      metric: 'Kullanıcı Deneyimi'
     },
     {
       name: 'Can Arslan',
       role: 'E-ticaret Müdürü',
       company: 'ShopSmart',
-      image: '/avatars/can.jpg',
-      content: 'E-ticaret sitemizde dönüşüm oranları %200 arttı. SEO yatırımımızın karşılığını fazlasıyla aldık.',
+      content: 'PageSpeed analizi Google\'ın kendi aracıyla aynı sonuçları veriyor. Performans önerileri de çok pratik. Düzenli olarak kullanıyorum.',
       rating: 5,
-      improvement: '+200%',
-      metric: 'Dönüşüm Oranı'
+      improvement: '87%',
+      metric: 'Performans Analizi'
     },
     {
       name: 'Elif Yıldız',
-      role: 'Pazarlama Direktörü',
+      role: 'UX Tasarımcısı',
       company: 'InnovateLab',
-      image: '/avatars/elif.jpg',
-      content: 'Teknoloji sektöründe rekabet çok sert ama Promind360 ile rakiplerimizi geride bıraktık.',
+      content: 'Görsel raporlar ve skor kartları çok anlaşılır. Teknik olmayan kişiler bile sonuçları kolayca anlayabiliyor. Mükemmel bir araç.',
       rating: 5,
-      improvement: '+180%',
-      metric: 'Anahtar Kelime Sıralaması'
+      improvement: '94%',
+      metric: 'Rapor Kalitesi'
     }
   ];
 
   const stats = [
-    { icon: Users, value: '500+', label: 'Mutlu Müşteri' },
-    { icon: TrendingUp, value: '95%', label: 'Başarı Oranı' },
-    { icon: Award, value: '50+', label: 'Ödül' },
-    { icon: Star, value: '4.9/5', label: 'Müşteri Puanı' }
+    { icon: Users, value: '1000+', label: 'Analiz Edilen Site' },
+    { icon: TrendingUp, value: '89%', label: 'Ortalama Doğruluk' },
+    { icon: Award, value: '4.8/5', label: 'Kullanıcı Puanı' },
+    { icon: Star, value: '95%', label: 'Memnuniyet Oranı' }
   ];
 
   return (
@@ -82,16 +76,16 @@ const Testimonials = () => {
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
           <Badge variant="secondary" className="mb-4">
-            Müşteri Yorumları
+            Kullanıcı Deneyimleri
           </Badge>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-            Müşterilerimizin{' '}
+            Kullanıcılarımızın{' '}
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Başarı Hikayeleri
+              Gerçek Yorumları
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Gerçek sonuçlar, gerçek müşteriler. SEO stratejilerimizin işe yaradığını kanıtlayan başarı hikayeleri.
+            SEO analiz aracımızın doğruluğu ve kullanışlılığı hakkında gerçek kullanıcı deneyimleri.
           </p>
         </div>
 
@@ -116,7 +110,6 @@ const Testimonials = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={testimonial.image} alt={testimonial.name} />
                       <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                         {testimonial.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
@@ -158,20 +151,20 @@ const Testimonials = () => {
             <CardContent className="p-8">
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <Star className="h-5 w-5 text-primary" />
-                <span className="text-sm font-medium text-primary">4.9/5 Müşteri Puanı</span>
+                <span className="text-sm font-medium text-primary">4.8/5 Kullanıcı Puanı</span>
               </div>
-              <h3 className="text-2xl font-bold mb-4">Başarı Hikayenizi Yazalım</h3>
+              <h3 className="text-2xl font-bold mb-4">Sitenizi Analiz Edin</h3>
               <p className="text-muted-foreground mb-6">
-                500+ mutlu müşteri gibi siz de SEO başarınızı yaşayın.
+                1000+ kullanıcı gibi siz de sitenizin SEO performansını anında öğrenin.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Badge variant="outline" className="text-sm">
                   <Users className="h-3 w-3 mr-1" />
-                  500+ Başarılı Proje
+                  1000+ Analiz Edilen Site
                 </Badge>
                 <Badge variant="outline" className="text-sm">
                   <Award className="h-3 w-3 mr-1" />
-                  %95 Başarı Oranı
+                  %89 Ortalama Doğruluk
                 </Badge>
               </div>
             </CardContent>

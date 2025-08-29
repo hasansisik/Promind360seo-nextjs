@@ -162,20 +162,34 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
       })();
 
       // Start the actual API analysis and wait for it to complete
-      const result = await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
-      apiCompleted = true;
-      
-      console.log('API Analysis completed. Result:', result);
+      try {
+        const result = await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
+        apiCompleted = true;
+        
+        console.log('API Analysis completed. Result:', result);
 
-      // Wait for progress simulation to complete
-      if (!progressCompleted) {
-        console.log('Waiting for progress animation to complete...');
-        await progressPromise;
+        // Wait for progress simulation to complete
+        if (!progressCompleted) {
+          console.log('Waiting for progress animation to complete...');
+          await progressPromise;
+        }
+
+        // Show results immediately after progress is complete
+        console.log('Showing results...');
+        setShowResults(true);
+      } catch (error) {
+        console.error('API Analysis failed:', error);
+        
+        // Wait for progress simulation to complete
+        if (!progressCompleted) {
+          console.log('Waiting for progress animation to complete...');
+          await progressPromise;
+        }
+
+        // Show error message
+        alert('API analizi başarısız oldu. Lütfen API anahtarınızı kontrol edin veya daha sonra tekrar deneyin.');
+        dispatch({ type: 'seo/setAnalyzing', payload: false });
       }
-
-      // Show results immediately after progress is complete
-      console.log('Showing results...');
-      setShowResults(true);
     }
   };
 
@@ -406,22 +420,22 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       </div>
                       
                       {/* Score Guide */}
-                      <div className="mt-4 grid grid-cols-4 gap-2 text-xs">
+                      <div className="mt-4 flex justify-between items-center text-xs">
                         <div className="flex items-center space-x-1">
-                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                          <span>Mükemmel (80-100)</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                          <span>İyi (60-79)</span>
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                          <span>Kötü (0-39)</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                           <span>Orta (40-59)</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                          <span>Kötü (0-39)</span>
+                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                          <span>İyi (60-79)</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                          <span>Mükemmel (80-100)</span>
                         </div>
                       </div>
                     </CardContent>
@@ -476,6 +490,14 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>Title Uzunluğu: {seoData.title ? (seoData.title.length <= 60 ? 'Uygun' : 'Uzun') : 'Eksik'}</span>
+                                <Badge variant="outline" className="text-xs ml-auto">
+                                  {seoData.title ? (seoData.title.length <= 60 ? 'Optimal' : 'Uzun') : 'Eksik'}
+                                </Badge>
+                              </div>
+
+                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Description: {seoData.description ? 'Mevcut' : 'Eksik'}</span>
                                 <Badge variant="outline" className="text-xs ml-auto">
                                   {seoData.description ? 'SEO' : 'Eksik'}
@@ -487,6 +509,22 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                 <span>Keywords: {seoData.keywords ? 'Mevcut' : 'Eksik'}</span>
                                 <Badge variant="outline" className="text-xs ml-auto">
                                   {seoData.keywords ? 'SEO' : 'Eksik'}
+                                </Badge>
+                              </div>
+
+                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>CTA Varlığı: {seoData.cta_buttons ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge variant="outline" className="text-xs ml-auto">
+                                  {seoData.cta_buttons ? 'Optimize' : 'Eksik'}
+                                </Badge>
+                              </div>
+
+                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>Anahtar Kelime Yoğunluğu: {seoData.keyword_density ? 'Uygun' : 'Düşük'}</span>
+                                <Badge variant="outline" className="text-xs ml-auto">
+                                  {seoData.keyword_density ? 'Optimal' : 'Düşük'}
                                 </Badge>
                               </div>
                             </>
@@ -729,10 +767,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                     <Button onClick={resetAnalysis} variant="outline">
                       Yeni Analiz
                     </Button>
-                    <Button>
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      Detaylı Rapor İndir
-                    </Button>
+                   
                   </div>
                 </div>
               )}

@@ -19,53 +19,53 @@ const Services = () => {
   const services = [
     {
       icon: Search,
-      title: 'SEO Optimizasyonu',
-      description: 'Arama motoru sıralamalarınızı yükseltmek için kapsamlı SEO stratejileri geliştiriyoruz.',
-      features: ['Anahtar kelime analizi', 'Teknik SEO', 'İçerik optimizasyonu'],
+      title: 'Website SEO Analizi',
+      description: 'Kapsamlı SEO denetimi ile sitenizin arama motoru performansını analiz ediyoruz.',
+      features: ['Teknik SEO kontrolü', 'İçerik analizi', 'Anahtar kelime değerlendirmesi'],
       badge: 'Popüler'
     },
     {
-      icon: TrendingUp,
-      title: 'Sosyal Medya Pazarlaması',
-      description: 'Markanızı sosyal medyada güçlendirin ve hedef kitlenizle etkileşimi artırın.',
-      features: ['Platform stratejisi', 'İçerik planlaması', 'Performans analizi'],
+      icon: BarChart3,
+      title: 'PageSpeed Optimizasyonu',
+      description: 'Site hızınızı analiz ederek performans sorunlarını tespit ediyoruz.',
+      features: ['Hız analizi', 'Performans önerileri', 'Optimizasyon raporu'],
       badge: 'Yeni'
     },
     {
-      icon: FileText,
-      title: 'Tek Sayfa SEO',
-      description: 'Landing page\'lerinizi optimize ederek dönüşüm oranlarınızı artırın.',
-      features: ['Sayfa hızı optimizasyonu', 'CTA optimizasyonu', 'A/B testleri'],
-      badge: null
-    },
-    {
-      icon: PenTool,
-      title: 'İçerik Pazarlaması',
-      description: 'Hedef kitlenizi çeken ve SEO dostu içerikler oluşturuyoruz.',
-      features: ['Blog yazıları', 'İnfografikler', 'Video içerik'],
-      badge: null
-    },
-    {
-      icon: Mail,
-      title: 'E-posta Pazarlaması',
-      description: 'Müşteri sadakatini artıran ve satışları destekleyen e-posta kampanyaları.',
-      features: ['Otomasyon', 'Kişiselleştirme', 'A/B testleri'],
-      badge: null
-    },
-    {
       icon: Target,
-      title: 'Anahtar Kelime Araştırması',
-      description: 'Rakip analizi ve veri odaklı anahtar kelime stratejileri geliştiriyoruz.',
-      features: ['Rakip analizi', 'Hacim analizi', 'Zorluk değerlendirmesi'],
+      title: 'AI Bot Erişim Analizi',
+      description: 'Yapay zeka botlarının sitenize erişim durumunu kontrol ediyoruz.',
+      features: ['Bot erişim kontrolü', 'Robots.txt analizi', 'AI dostu optimizasyon'],
+      badge: null
+    },
+    {
+      icon: FileText,
+      title: 'Meta Tag Optimizasyonu',
+      description: 'Title, description ve meta tag\'larınızın SEO uyumluluğunu değerlendiriyoruz.',
+      features: ['Title analizi', 'Description kontrolü', 'Meta tag düzenleme'],
+      badge: null
+    },
+    {
+      icon: TrendingUp,
+      title: 'CTA ve Dönüşüm Analizi',
+      description: 'Call-to-action butonlarınızın varlığını ve etkinliğini analiz ediyoruz.',
+      features: ['CTA varlık kontrolü', 'Dönüşüm analizi', 'Kullanıcı deneyimi'],
+      badge: null
+    },
+    {
+      icon: Lightbulb,
+      title: 'Anahtar Kelime Yoğunluğu',
+      description: 'İçeriğinizdeki anahtar kelime yoğunluğunu ve dağılımını analiz ediyoruz.',
+      features: ['Yoğunluk analizi', 'Dağılım kontrolü', 'SEO önerileri'],
       badge: 'Temel'
     }
   ];
 
   const stats = [
-    { icon: BarChart3, value: '95%', label: 'Başarı Oranı' },
-    { icon: Globe, value: '500+', label: 'Optimize Edilen Site' },
-    { icon: Users, value: '10K+', label: 'Mutlu Müşteri' },
-    { icon: Zap, value: '30 Gün', label: 'İlk Sonuç' }
+    { icon: BarChart3, value: '100%', label: 'Gerçek Zamanlı Analiz' },
+    { icon: Globe, value: 'Sınırsız', label: 'Site Analizi' },
+    { icon: Users, value: 'Anında', label: 'Sonuç' },
+    { icon: Zap, value: 'Detaylı', label: 'Rapor' }
   ];
 
   return (
@@ -74,16 +74,16 @@ const Services = () => {
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
           <Badge variant="secondary" className="mb-4">
-            Hizmetlerimiz
+            SEO Analiz Hizmetlerimiz
           </Badge>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-            SEO Ajansınızdan{' '}
+            Kapsamlı{' '}
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Kapsamlı Hizmetler
+              SEO Analizi
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Stratejimiz sürekli gelişmeyi içerir, işletmeler için olağanüstü SEO ürettiğimizden emin olmak için.
+            Gerçek zamanlı SEO analizi ile sitenizin performansını anında değerlendirin ve iyileştirme önerileri alın.
           </p>
         </div>
 
