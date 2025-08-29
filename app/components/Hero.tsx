@@ -573,6 +573,14 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                     {seoData?.timestamp && (
                       <p className="text-xs text-muted-foreground">Son güncelleme: {new Date(seoData.timestamp).toLocaleString('tr-TR')}</p>
                     )}
+                    
+                    {/* Top New Analysis Button */}
+                    <div className="pt-4">
+                      <Button onClick={resetAnalysis} variant="outline" size="sm">
+                        <Search className="h-4 w-4 mr-2" />
+                        Yeni Analiz
+                      </Button>
+                    </div>
                   </div>
 
                   {/* API Error Display */}
