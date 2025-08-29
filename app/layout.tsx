@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Promind360 - Modern SEO Marketing & Agency",
-  description: "Ensuring the best return on investment for your bespoke SEO Campaign requirement. Modern, data-driven SEO solutions for businesses.",
-  keywords: "SEO, digital marketing, agency, optimization, search engine",
+  title: "Promind360 - Kapsamlı SEO Analiz & Optimizasyon Platformu",
+  description: "Web sitenizin SEO performansını detaylı analiz edin. Gerçek zamanlı SEO denetimi, PageSpeed testi, AI bot erişim analizi ve kapsamlı optimizasyon önerileri.",
+  keywords: "SEO analizi, SEO denetimi, PageSpeed testi, web sitesi optimizasyonu, arama motoru optimizasyonu, SEO raporu, AI bot analizi",
   authors: [{ name: "Promind360" }],
 };
 

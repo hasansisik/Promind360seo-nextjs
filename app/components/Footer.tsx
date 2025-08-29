@@ -12,20 +12,20 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: 'SEO Optimizasyonu', href: '#services' },
-    { name: 'Sosyal Medya Pazarlaması', href: '#services' },
-    { name: 'Tek Sayfa SEO', href: '#services' },
-    { name: 'İçerik Pazarlaması', href: '#services' },
-    { name: 'E-posta Pazarlaması', href: '#services' },
-    { name: 'Anahtar Kelime Araştırması', href: '#services' }
+    { name: 'Website SEO Analizi', href: '#services' },
+    { name: 'PageSpeed Optimizasyonu', href: '#services' },
+    { name: 'AI Bot Erişim Analizi', href: '#services' },
+    { name: 'Meta Tag Optimizasyonu', href: '#services' },
+    { name: 'CTA ve Dönüşüm Analizi', href: '#services' },
+    { name: 'Anahtar Kelime Yoğunluğu', href: '#services' }
   ];
 
   const process = [
-    { name: 'Analiz & Araştırma', href: '#process' },
-    { name: 'Strateji Geliştirme', href: '#process' },
-    { name: 'Teknik Optimizasyon', href: '#process' },
-    { name: 'İçerik Optimizasyonu', href: '#process' },
-    { name: 'İzleme & Raporlama', href: '#process' }
+    { name: 'URL Girişi & Doğrulama', href: '#process' },
+    { name: 'SEO API Analizi', href: '#process' },
+    { name: 'PageSpeed Testi', href: '#process' },
+    { name: 'Veri İşleme & Analiz', href: '#process' },
+    { name: 'Sonuç Gösterimi', href: '#process' }
   ];
 
   const contactInfo = [
@@ -56,8 +56,8 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Modern SEO çözümleri ile işletmenizi dijital dünyada öne çıkarıyoruz. 
-              Veri odaklı stratejiler ve ölçülebilir sonuçlar için güvenilir partneriniz.
+              Kapsamlı SEO analiz platformu ile web sitenizin performansını detaylı analiz edin. 
+              Gerçek zamanlı SEO denetimi, PageSpeed testi ve AI bot erişim analizi ile sitenizi optimize edin.
             </p>
             
             {/* Contact Info */}
@@ -125,14 +125,14 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 md-pr-10">
             <Link 
               href="https://birimajans.com" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center space-x-2 hover:text-primary transition-colors"
             >
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs bg-yellow-300 text-yellow-800 px-4 border-full">
                 <span className="font-bold text-primary">B</span>
                 <span className="ml-1">Birimajans</span>
               </Badge>
