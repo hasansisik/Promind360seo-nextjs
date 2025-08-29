@@ -57,7 +57,7 @@ const Header = () => {
           </NavigationMenu>
           
           <Button onClick={() => scrollToSection('hero')}>
-            Analiz
+            Ücretsiz Analiz Et
           </Button>
         </nav>
 
@@ -70,21 +70,21 @@ const Header = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <nav className="flex flex-col space-y-4 mt-8">
+            <nav className="flex flex-col space-y-4 mt-8 px-4">
               {navigationItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href.replace('#', ''))}
-                  className="text-left text-lg font-medium transition-colors hover:text-primary"
+                  className="text-left text-lg font-medium transition-colors hover:text-primary py-2 px-3 rounded-md hover:bg-accent"
                 >
                   {item.name}
                 </button>
               ))}
               <Button 
                 onClick={() => scrollToSection('hero')}
-                className="mt-4 justify-start"
+                className="mt-4 justify-start mx-3"
               >
-                Analiz
+                Ücretsiz Analiz Et
               </Button>
             </nav>
           </SheetContent>

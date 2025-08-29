@@ -11,29 +11,31 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, BarChart3, Globe, Smartphone, Lightbulb } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, BarChart3, Globe, Smartphone, Lightbulb, Play } from 'lucide-react';
 
-  const Hero = () => {
+const Hero = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { 
-    seoData, 
+  const {
+    seoData,
     onPageData,
-    pageSpeedData, 
+    pageSpeedData,
     combinedReport,
-    errors, 
-    isAnalyzing, 
-    progress, 
-    currentStep, 
+    errors,
+    isAnalyzing,
+    progress,
+    currentStep,
     analysisSteps,
     timestamp,
-    analyzedUrl 
+    analyzedUrl
   } = useSelector((state: RootState) => state.seo);
 
 
-  
+
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
   const [showResults, setShowResults] = useState(false);
+  const [showDemoDialog, setShowDemoDialog] = useState(false);
 
   const sectors = [
     { value: 'ecommerce', label: 'E-ticaret' },
@@ -264,16 +266,76 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
     { icon: Target, title: 'Sektör Odaklı', description: 'Özel SEO önerileri' }
   ];
 
+  // Demo data for Fikirmax.com
+  const demoData = {
+    url: 'https://fikirmax.com/',
+    sector: 'technology',
+    seoData: {
+      ai_bots_allowed: true,
+      robots_found: true,
+      meta_tags: true,
+      title: 'Fikirmax - Stratejik Pazarlama Danışmanlığı',
+      description: 'Küçük ve orta ölçekli işletmelere özel, stratejik pazarlama danışmanlığı sunan butik ajans.',
+      keywords: 'pazarlama, dijital pazarlama, stratejik danışmanlık, marka yönetimi',
+      cta_buttons: true,
+      keyword_density: true,
+      report: {
+        overallScore: 92,
+        scoreLevel: 'mükemmel'
+      }
+    },
+    onPageData: {
+      webtitle: { title: 'Fikirmax - Stratejik Pazarlama Danışmanlığı', length: 45 },
+      metadescription: { description: 'Küçük ve orta ölçekli işletmelere özel, stratejik pazarlama danışmanlığı sunan butik ajans.', length: 120 },
+      headings: { h1: { count: 1 }, h2: { count: 3 }, h3: { count: 5 } },
+      images: { count: 8 },
+      links: { count: 25 },
+      sitemap_robots: ['Sitemap', 'Robots.txt'],
+      iframe: { count: 0 },
+      report: {
+        overallScore: 89,
+        scoreLevel: 'iyi'
+      }
+    },
+    pageSpeedData: {
+      performanceMetrics: {
+        performanceScore: 94,
+        firstContentfulPaint: '1.2s',
+        largestContentfulPaint: '2.1s',
+        speedIndex: '1.8s',
+        totalBlockingTime: '45ms',
+        cumulativeLayoutShift: '0.05'
+      },
+      report: {
+        accessibilityScore: 96
+      }
+    },
+    combinedReport: {
+      overallScore: 92,
+      scoreLevel: 'mükemmel',
+      strengths: [
+        'Mükemmel sayfa yükleme hızı ve performans',
+        'Güçlü SEO optimizasyonu ve meta etiketler',
+        'Yüksek erişilebilirlik skoru',
+        'Profesyonel içerik yapısı ve heading hiyerarşisi'
+      ],
+      weaknesses: [
+        'Daha fazla içerik çeşitliliği eklenebilir',
+        'Sosyal medya entegrasyonu geliştirilebilir'
+      ]
+    }
+  };
+
 
 
   const handleAnalyze = async () => {
     if (websiteUrl) {
       setShowResults(false);
       dispatch(setAnalyzedUrl(websiteUrl));
-      
+
       // Set analyzing state to true to show progress
       dispatch({ type: 'seo/setAnalyzing', payload: true });
-      
+
       // Start progress simulation immediately
       const progressSteps = [
         { progress: 8, message: 'Web sitesi bağlantısı kontrol ediliyor...' },
@@ -299,7 +361,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
         for (let i = 0; i < progressSteps.length; i++) {
           const step = progressSteps[i];
           dispatch(updateProgress({ progress: step.progress, step: step.message }));
-          
+
           // Consistent delays for smooth progression
           let delay;
           if (i < 5) {
@@ -311,7 +373,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
           } else {
             delay = 1000; // 1 second for final steps
           }
-          
+
           await new Promise(resolve => setTimeout(resolve, delay));
         }
         progressCompleted = true;
@@ -320,7 +382,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
       // Start the actual API analysis and wait for it to complete
       try {
         await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
-        
+
 
         // Wait for progress simulation to complete
         if (!progressCompleted) {
@@ -330,7 +392,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
         // Show results immediately after progress is complete
         setShowResults(true);
       } catch {
-        
+
         // Wait for progress simulation to complete
         if (!progressCompleted) {
           await progressPromise;
@@ -357,13 +419,29 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'text-green-600';
     if (score >= 70) return 'text-yellow-600';
+    if (score >= 50) return 'text-orange-600';
     return 'text-red-600';
   };
 
   const getScoreBg = (score: number) => {
     if (score >= 90) return 'bg-green-100';
     if (score >= 70) return 'bg-yellow-100';
+    if (score >= 50) return 'bg-orange-100';
     return 'bg-red-100';
+  };
+
+  const getScoreText = (score: number) => {
+    if (score >= 90) return 'Mükemmel';
+    if (score >= 70) return 'İyi';
+    if (score >= 50) return 'Orta';
+    return 'Kötü';
+  };
+
+  const getScoreTextColor = (score: number) => {
+    if (score >= 90) return 'text-green-700';
+    if (score >= 70) return 'text-yellow-700';
+    if (score >= 50) return 'text-orange-700';
+    return 'text-red-700';
   };
 
 
@@ -389,7 +467,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
           </div>
 
           {/* Features */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8">
+          <div className="flex flex-wrap justify-center gap-6 mt-8 mb-4">
             {features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <feature.icon className="h-4 w-4 text-primary" />
@@ -400,53 +478,463 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
             ))}
           </div>
 
+          <Dialog open={showDemoDialog} onOpenChange={setShowDemoDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="text-xs">
+                <Play className="h-3 w-3 mr-1" />
+                Demo Raporu Görüntüle
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="!w-[95vw] sm:!w-[80vw] !max-w-[95vw] sm:!max-w-[65vw] max-h-[95vh] overflow-y-auto overscroll-contain">
+              <DialogHeader>
+
+              </DialogHeader>
+              <div className="space-y-6 overflow-y-auto max-h-[calc(85vh-120px)] pr-2">
+                {/* Results Header */}
+                <div className="text-center space-y-2">
+                  <h3 className="text-2xl font-bold">Analiz Sonuçları</h3>
+                  <p className="text-muted-foreground">Web sitesi: {demoData.url}</p>
+                  <p className="text-xs text-green-600">✅ Demo raporu - Gerçek veriler</p>
+                  <p className="text-xs text-muted-foreground">Son güncelleme: {new Date().toLocaleString('tr-TR')}</p>
+                </div>
+
+                {/* Overall Score */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <BarChart3 className="h-5 w-5" />
+                      <span>Genel Site Skoru</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col items-center space-y-4">
+                      <div className={`w-24 h-24 rounded-full ${getScoreBg(demoData.combinedReport.overallScore)} flex items-center justify-center`}>
+                        <span className={`text-2xl font-bold ${getScoreColor(demoData.combinedReport.overallScore)}`}>
+                          {demoData.combinedReport.overallScore}
+                        </span>
+                      </div>
+                      <div className="text-center">
+                        <p className={`text-sm font-medium ${getScoreTextColor(demoData.combinedReport.overallScore)}`}>
+                          {getScoreText(demoData.combinedReport.overallScore)}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Son güncelleme: {new Date().toLocaleString('tr-TR')}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Score Guide */}
+                    <div className="mt-4 flex justify-between items-center text-xs">
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <span className="text-red-700">Kötü (0-49)</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                        <span className="text-orange-700">Orta (50-69)</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <span className="text-yellow-700">İyi (70-89)</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span className="text-green-700">Mükemmel (90-100)</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Detailed Metrics */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* SEO */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-left">
+                        <Globe className="h-5 w-5" />
+                        <span>SEO Analizi ({demoData.seoData.report.overallScore})</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Progress value={demoData.seoData.report.overallScore} className="h-2" />
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>AI Bot Erişimi: İzin Veriliyor</span>
+                          <Badge variant="outline" className="text-xs ml-auto">AI Dostu</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Robots.txt: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Meta Tags: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Title Tag: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Title Uzunluğu: Uygun</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Description: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Keywords: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>CTA Varlığı: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Anahtar Kelime Yoğunluğu: Uygun</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* On-Page SEO */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-left">
+                        <Lightbulb className="h-5 w-5" />
+                        <span>On-Page SEO Analizi ({demoData.onPageData.report.overallScore})</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Progress value={demoData.onPageData.report.overallScore} className="h-2" />
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Title: {demoData.onPageData.webtitle.title}</span>
+                          <Badge variant="outline" className="text-xs ml-auto">
+                            {demoData.onPageData.webtitle.length} karakter
+                          </Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Meta Description: {demoData.onPageData.metadescription.description}</span>
+                          <Badge variant="outline" className="text-xs ml-auto">
+                            {demoData.onPageData.metadescription.length} karakter
+                          </Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Heading Yapısı: H1({demoData.onPageData.headings.h1.count}) H2({demoData.onPageData.headings.h2.count}) H3({demoData.onPageData.headings.h3.count})</span>
+                          <Badge variant="outline" className="text-xs ml-auto">İyi</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Resim Sayısı: {demoData.onPageData.images.count} adet</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Link Sayısı: {demoData.onPageData.links.count} adet</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Sitemap & Robots: {demoData.onPageData.sitemap_robots.join(', ')}</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Mevcut</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Iframe Kullanımı: {demoData.onPageData.iframe.count} adet</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Yok (İyi)</Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Performance */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-left">
+                        <Zap className="h-5 w-5" />
+                        <span>Performans ({demoData.pageSpeedData.performanceMetrics.performanceScore})</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Progress value={demoData.pageSpeedData.performanceMetrics.performanceScore} className="h-2" />
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center text-sm">
+                          <span>First Contentful Paint</span>
+                          <span className="font-mono text-green-600">
+                            {demoData.pageSpeedData.performanceMetrics.firstContentfulPaint}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Largest Contentful Paint</span>
+                          <span className="font-mono text-green-600">
+                            {demoData.pageSpeedData.performanceMetrics.largestContentfulPaint}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Speed Index</span>
+                          <span className="font-mono text-green-600">
+                            {demoData.pageSpeedData.performanceMetrics.speedIndex}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Total Blocking Time</span>
+                          <span className="font-mono text-green-600">
+                            {demoData.pageSpeedData.performanceMetrics.totalBlockingTime}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Cumulative Layout Shift</span>
+                          <span className="font-mono text-green-600">
+                            {demoData.pageSpeedData.performanceMetrics.cumulativeLayoutShift}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Accessibility */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center space-x-2 text-left">
+                        <Smartphone className="h-5 w-5" />
+                        <span>Erişilebilirlik ({demoData.pageSpeedData.report.accessibilityScore})</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Progress value={demoData.pageSpeedData.report.accessibilityScore} className="h-2" />
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className={getScoreTextColor(demoData.pageSpeedData.report.accessibilityScore)}>
+                            {getScoreText(demoData.pageSpeedData.report.accessibilityScore)} erişilebilirlik
+                          </span>
+                          <Badge variant="outline" className={`text-xs ml-auto ${getScoreTextColor(demoData.pageSpeedData.report.accessibilityScore)}`}>
+                            {getScoreText(demoData.pageSpeedData.report.accessibilityScore)}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Alt Text: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>ARIA Labels: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Keyboard Navigation: Mevcut</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Color Contrast: Uygun</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Uygun</Badge>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span>Screen Reader: Uyumlu</span>
+                          <Badge variant="outline" className="text-xs ml-auto">Uyumlu</Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Combined Report Summary */}
+                <Card className="border border-gray-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
+                      <BarChart3 className="h-5 w-5" />
+                      <span>Rapor Özeti</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {/* Overall Assessment */}
+                    <div className={`p-3 rounded-lg ${getScoreBg(demoData.combinedReport.overallScore)}`}>
+                      <h4 className={`text-lg font-bold ${getScoreTextColor(demoData.combinedReport.overallScore)}`}>
+                        {getScoreText(demoData.combinedReport.overallScore)} - {demoData.combinedReport.overallScore}/100
+                      </h4>
+                    </div>
+
+                    {/* Key Points */}
+                    <div className="space-y-3">
+                      <div>
+                        <h5 className="text-sm font-medium text-green-700 mb-2 text-left">Güçlü Yönler:</h5>
+                        <div className="space-y-1">
+                          {demoData.combinedReport.strengths.map((strength: string, index: number) => (
+                            <div key={index} className="flex items-center space-x-2 text-sm">
+                              <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                              <span className="text-gray-700 text-left">{strength}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h5 className="text-sm font-medium text-red-700 mb-2 text-left">Zayıf Yönler:</h5>
+                        <div className="space-y-1">
+                          {demoData.combinedReport.weaknesses.map((weakness: string, index: number) => (
+                            <div key={index} className="flex items-center space-x-2 text-sm">
+                              <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                              <span className="text-gray-700 text-left">{weakness}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Detailed Scores */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                      <div className={`text-center p-3 rounded-lg ${getScoreBg(demoData.seoData.report.overallScore)}`}>
+                        <div className={`text-2xl font-bold ${getScoreColor(demoData.seoData.report.overallScore)}`}>{demoData.seoData.report.overallScore}</div>
+                        <div className={`text-sm ${getScoreTextColor(demoData.seoData.report.overallScore)}`}>AI SEO Skoru</div>
+                        <div className={`text-xs ${getScoreTextColor(demoData.seoData.report.overallScore)}`}>{getScoreText(demoData.seoData.report.overallScore)}</div>
+                      </div>
+                      <div className={`text-center p-3 rounded-lg ${getScoreBg(demoData.onPageData.report.overallScore)}`}>
+                        <div className={`text-2xl font-bold ${getScoreColor(demoData.onPageData.report.overallScore)}`}>{demoData.onPageData.report.overallScore}</div>
+                        <div className={`text-sm ${getScoreTextColor(demoData.onPageData.report.overallScore)}`}>On-Page SEO</div>
+                        <div className={`text-xs ${getScoreTextColor(demoData.onPageData.report.overallScore)}`}>{getScoreText(demoData.onPageData.report.overallScore)}</div>
+                      </div>
+                      <div className={`text-center p-3 rounded-lg ${getScoreBg(demoData.pageSpeedData.performanceMetrics.performanceScore)}`}>
+                        <div className={`text-2xl font-bold ${getScoreColor(demoData.pageSpeedData.performanceMetrics.performanceScore)}`}>{demoData.pageSpeedData.performanceMetrics.performanceScore}</div>
+                        <div className={`text-sm ${getScoreTextColor(demoData.pageSpeedData.performanceMetrics.performanceScore)}`}>Performans</div>
+                        <div className={`text-xs ${getScoreTextColor(demoData.pageSpeedData.performanceMetrics.performanceScore)}`}>
+                          {getScoreText(demoData.pageSpeedData.performanceMetrics.performanceScore)}
+                        </div>
+                      </div>
+                      <div className={`text-center p-3 rounded-lg ${getScoreBg(demoData.pageSpeedData.report.accessibilityScore)}`}>
+                        <div className={`text-2xl font-bold ${getScoreColor(demoData.pageSpeedData.report.accessibilityScore)}`}>{demoData.pageSpeedData.report.accessibilityScore}</div>
+                        <div className={`text-sm ${getScoreTextColor(demoData.pageSpeedData.report.accessibilityScore)}`}>Erişilebilirlik</div>
+                        <div className={`text-xs ${getScoreTextColor(demoData.pageSpeedData.report.accessibilityScore)}`}>
+                          {getScoreText(demoData.pageSpeedData.report.accessibilityScore)}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Sektör Bazlı Özel Yorum */}
+                <Card className="border-green-200 bg-green-50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2 text-green-800">
+                      <Target className="h-5 w-5" />
+                      <span>{sectorInsights[demoData.sector as keyof typeof sectorInsights].title}</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Sektör İçgörüleri */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör İçgörüleri:</h4>
+                      <div className="space-y-2">
+                        {sectorInsights[demoData.sector as keyof typeof sectorInsights].insights.map((insight: string, index: number) => (
+                          <div key={index} className="flex items-start space-x-2 text-sm">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-green-800 leading-relaxed">{insight}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Sektör Önerileri */}
+                    <div>
+                      <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör Özel Önerileri:</h4>
+                      <div className="space-y-2">
+                        {sectorInsights[demoData.sector as keyof typeof sectorInsights].recommendations.map((recommendation: string, index: number) => (
+                          <div key={index} className="flex items-start space-x-2 text-sm">
+                            <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                            <span className="text-green-800 leading-relaxed">{recommendation}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Sektör Skor Değerlendirmesi */}
+                    <div className="mt-4 p-3 bg-white rounded-lg border border-green-200">
+                      <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör Bazlı Değerlendirme:</h4>
+                      <div className="text-sm text-green-800 space-y-1">
+                        <p>Teknoloji sektöründe <strong>hızlı sayfa yükleme</strong> ve <strong>teknik içerik</strong> kritik öneme sahiptir. Performans skorunuz {demoData.pageSpeedData.performanceMetrics.performanceScore}/100, bu sektör için <strong>mükemmel</strong> bir seviyededir.</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           {/* Analysis Form */}
           <Card className="max-w-4xl mx-auto mt-12">
             <CardContent className=" space-y-6">
               {!isAnalyzing && !showResults ? (
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1 relative max-w-md">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      type="url"
-                      value={websiteUrl}
-                      onChange={(e) => setWebsiteUrl(e.target.value)}
-                      placeholder="https://orneksite.com"
-                      className="pl-12 pr-10 h-12 text-base"
-                    />
-                    {websiteUrl && (
-                      <button
-                        onClick={clearInput}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-muted rounded-full transition-colors"
-                        aria-label="Temizle"
+                <>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-1 relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
+                      <Input
+                        type="url"
+                        value={websiteUrl}
+                        onChange={(e) => setWebsiteUrl(e.target.value)}
+                        placeholder="https://orneksite.com"
+                        className="pl-10 pr-12 h-12 text-base"
+                      />
+                      {websiteUrl && (
+                        <button
+                          onClick={clearInput}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 hover:bg-muted rounded-full transition-colors z-10"
+                          aria-label="Temizle"
+                        >
+                          <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                        </button>
+                      )}
+                    </div>
+
+                    <Select value={selectedSector} onValueChange={setSelectedSector}>
+                      <SelectTrigger className="w-full sm:w-[200px] h-12 text-base min-h-[48px]">
+                        <SelectValue placeholder="Sektör" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {sectors.map((sector) => (
+                          <SelectItem key={sector.value} value={sector.value}>
+                            {sector.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <div className="flex flex-col items-center justify-center min-w-[220px]">
+                      <Button
+                        onClick={handleAnalyze}
+                        disabled={!websiteUrl}
+                        className="w-full h-12 px-6 text-base whitespace-nowrap"
                       >
-                        <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
-                      </button>
-                    )}
+                        <Search className="h-5 w-5 mr-2" />
+                        Ücretsiz SEO Analizi Yap
+                      </Button>
+                    </div>
                   </div>
-                  
-                  <Select value={selectedSector} onValueChange={setSelectedSector}>
-                    <SelectTrigger className="w-full sm:w-[200px] h-12 text-base min-h-[48px]">
-                      <SelectValue placeholder="Sektör" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {sectors.map((sector) => (
-                        <SelectItem key={sector.value} value={sector.value}>
-                          {sector.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  
-                  <Button 
-                    onClick={handleAnalyze}
-                    disabled={!websiteUrl}
-                    className="w-full sm:w-[180px] h-12 px-8 text-base"
-                  >
-                    <Search className="h-5 w-5 mr-2" />
-                    Analiz Et
-                  </Button>
-                </div>
+
+                  <div className="text-center mt-4">
+                    <p className="text-xs text-muted-foreground ">
+                      Sitenizin SEO puanını saniyeler içinde öğrenin.
+                    </p>
+
+                  </div>
+
+                </>
               ) : isAnalyzing ? (
                 <div className="space-y-6">
                   {/* Progress Bar */}
@@ -456,7 +944,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       <span className="text-sm font-bold text-primary">{progress}%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-3">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-primary to-primary/60 h-3 rounded-full transition-all duration-500 ease-out"
                         style={{ width: `${progress}%` }}
                       ></div>
@@ -493,8 +981,8 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                   </div>
 
                   {/* Cancel Button */}
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => {
                       dispatch(resetSEOData());
                     }}
@@ -515,7 +1003,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                     {seoData?.timestamp && (
                       <p className="text-xs text-muted-foreground">Son güncelleme: {new Date(seoData.timestamp).toLocaleString('tr-TR')}</p>
                     )}
-                    
+
                     {/* Top New Analysis Button */}
                     <div className="pt-4">
                       <Button onClick={resetAnalysis} variant="outline" size="sm">
@@ -562,38 +1050,38 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                           </span>
                         </div>
                         <div className="text-center">
-                          <p className="text-sm font-medium">
-                            {combinedReport?.scoreLevel ? 
-                              combinedReport.scoreLevel.charAt(0).toUpperCase() + combinedReport.scoreLevel.slice(1) :
+                          <p className={`text-sm font-medium ${combinedReport?.overallScore ? getScoreTextColor(combinedReport.overallScore) : 'text-muted-foreground'}`}>
+                            {combinedReport?.overallScore ?
+                              getScoreText(combinedReport.overallScore) :
                               'Hesaplanmadı'
                             }
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {timestamp ? 
-                              `Son güncelleme: ${new Date(timestamp).toLocaleString('tr-TR')}` : 
+                            {timestamp ?
+                              `Son güncelleme: ${new Date(timestamp).toLocaleString('tr-TR')}` :
                               'Hesaplanmadı'
                             }
                           </p>
                         </div>
                       </div>
-                      
+
                       {/* Score Guide */}
                       <div className="mt-4 flex justify-between items-center text-xs">
                         <div className="flex items-center space-x-1">
                           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                          <span>Kötü (0-39)</span>
+                          <span className="text-red-700">Kötü (0-49)</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                          <span className="text-orange-700">Orta (50-69)</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                          <span>Orta (40-59)</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                          <span>İyi (60-79)</span>
+                          <span className="text-yellow-700">İyi (70-89)</span>
                         </div>
                         <div className="flex items-center space-x-1">
                           <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                          <span>Mükemmel (80-100)</span>
+                          <span className="text-green-700">Mükemmel (90-100)</span>
                         </div>
                       </div>
                     </CardContent>
@@ -621,7 +1109,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                   {seoData.ai_bots_allowed ? 'AI Dostu' : 'Kısıtlı'}
                                 </Badge>
                               </div>
-                              
+
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Robots.txt: {seoData.robots_found ? 'Mevcut' : 'Eksik'}</span>
@@ -697,101 +1185,101 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       </CardContent>
                     </Card>
 
-                                         {/* On-Page SEO */}
-                     <Card key={`on-page-${analyzedUrl}`}>
-                       <CardHeader>
-                         <CardTitle className="flex items-center space-x-2 text-left">
-                           <Lightbulb className="h-5 w-5" />
-                           <span>On-Page SEO Analizi ({onPageData?.report?.overallScore || 0})</span>
-                         </CardTitle>
-                       </CardHeader>
-                       <CardContent className="space-y-3">
-                         <Progress value={onPageData?.report?.overallScore || 0} className="h-2" />
-                         <div className="space-y-2">
-                           {onPageData ? (
-                             <>
-                               {/* Title Analysis */}
-                               {onPageData.webtitle && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Title: {onPageData.webtitle.title}</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.webtitle.length} karakter
-                                   </Badge>
-                                 </div>
-                               )}
+                    {/* On-Page SEO */}
+                    <Card key={`on-page-${analyzedUrl}`}>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2 text-left">
+                          <Lightbulb className="h-5 w-5" />
+                          <span>On-Page SEO Analizi ({onPageData?.report?.overallScore || 0})</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <Progress value={onPageData?.report?.overallScore || 0} className="h-2" />
+                        <div className="space-y-2">
+                          {onPageData ? (
+                            <>
+                              {/* Title Analysis */}
+                              {onPageData.webtitle && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Title: {onPageData.webtitle.title}</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.webtitle.length} karakter
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Meta Description */}
-                               {onPageData.metadescription && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Meta Description: {onPageData.metadescription.description}</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.metadescription.length} karakter
-                                   </Badge>
-                                 </div>
-                               )}
+                              {/* Meta Description */}
+                              {onPageData.metadescription && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Meta Description: {onPageData.metadescription.description}</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.metadescription.length} karakter
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Headings Structure */}
-                               {onPageData.headings && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Heading Yapısı: H1({onPageData.headings.h1?.count || 0}) H2({onPageData.headings.h2?.count || 0}) H3({onPageData.headings.h3?.count || 0})</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.headings.h1?.count === 1 ? 'İyi' : 'İyileştirilmeli'}
-                                   </Badge>
-                                 </div>
-                               )}
+                              {/* Headings Structure */}
+                              {onPageData.headings && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Heading Yapısı: H1({onPageData.headings.h1?.count || 0}) H2({onPageData.headings.h2?.count || 0}) H3({onPageData.headings.h3?.count || 0})</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.headings.h1?.count === 1 ? 'İyi' : 'İyileştirilmeli'}
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Images */}
-                               {onPageData.images && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Resim Sayısı: {onPageData.images.count} adet</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.images.count <= 20 ? 'Optimal' : 'Fazla'}
-                                   </Badge>
-                                 </div>
-                               )}
+                              {/* Images */}
+                              {onPageData.images && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Resim Sayısı: {onPageData.images.count} adet</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.images.count <= 20 ? 'Optimal' : 'Fazla'}
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Links */}
-                               {onPageData.links && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Link Sayısı: {onPageData.links.count} adet</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.links.count >= 10 && onPageData.links.count <= 50 ? 'Optimal' : 'İyileştirilmeli'}
-                                   </Badge>
-                                 </div>
-                               )}
+                              {/* Links */}
+                              {onPageData.links && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Link Sayısı: {onPageData.links.count} adet</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.links.count >= 10 && onPageData.links.count <= 50 ? 'Optimal' : 'İyileştirilmeli'}
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Sitemap & Robots */}
-                               {onPageData.sitemap_robots && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Sitemap & Robots: {onPageData.sitemap_robots.join(', ')}</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.sitemap_robots.length === 2 ? 'Mevcut' : 'Eksik'}
-                                   </Badge>
-                                 </div>
-                               )}
+                              {/* Sitemap & Robots */}
+                              {onPageData.sitemap_robots && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Sitemap & Robots: {onPageData.sitemap_robots.join(', ')}</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.sitemap_robots.length === 2 ? 'Mevcut' : 'Eksik'}
+                                  </Badge>
+                                </div>
+                              )}
 
-                               {/* Iframe */}
-                               {onPageData.iframe && (
-                                 <div className="flex items-center space-x-2 text-sm">
-                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                   <span>Iframe Kullanımı: {onPageData.iframe.count} adet</span>
-                                   <Badge variant="outline" className="text-xs ml-auto">
-                                     {onPageData.iframe.count === 0 ? 'Yok (İyi)' : 'Var'}
-                                   </Badge>
-                                 </div>
-                               )}
-                             </>
-                           ) : (
-                             <div className="flex items-center space-x-2 text-sm">
-                               <AlertCircle className="h-4 w-4 text-yellow-500" />
-                               <span className="flex-1">On-Page SEO Analizi: Hesaplanmadı</span>
-                               <Badge variant="outline" className="text-xs">Beklemede</Badge>
+                              {/* Iframe */}
+                              {onPageData.iframe && (
+                                <div className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span>Iframe Kullanımı: {onPageData.iframe.count} adet</span>
+                                  <Badge variant="outline" className="text-xs ml-auto">
+                                    {onPageData.iframe.count === 0 ? 'Yok (İyi)' : 'Var'}
+                                  </Badge>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <div className="flex items-center space-x-2 text-sm">
+                              <AlertCircle className="h-4 w-4 text-yellow-500" />
+                              <span className="flex-1">On-Page SEO Analizi: Hesaplanmadı</span>
+                              <Badge variant="outline" className="text-xs">Beklemede</Badge>
                             </div>
                           )}
                         </div>
@@ -840,10 +1328,10 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                             </span>
                           </div>
                         </div>
-                        
+
                         {/* Performance Score Details */}
 
-                        
+
 
                       </CardContent>
                     </Card>
@@ -864,20 +1352,14 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                               {/* Accessibility Score Level */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>
-                                  {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel erişilebilirlik' :
-                                   pageSpeedData.report.accessibilityScore >= 85 ? 'Çok iyi erişilebilirlik' :
-                                   pageSpeedData.report.accessibilityScore >= 70 ? 'İyi erişilebilirlik' :
-                                   pageSpeedData.report.accessibilityScore >= 50 ? 'Orta erişilebilirlik' : 'Düşük erişilebilirlik'}
+                                <span className={getScoreTextColor(pageSpeedData.report.accessibilityScore)}>
+                                  {getScoreText(pageSpeedData.report.accessibilityScore)} erişilebilirlik
                                 </span>
-                                <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel' :
-                                   pageSpeedData.report.accessibilityScore >= 85 ? 'Çok İyi' :
-                                   pageSpeedData.report.accessibilityScore >= 70 ? 'İyi' :
-                                   pageSpeedData.report.accessibilityScore >= 50 ? 'Orta' : 'Kötü'}
+                                <Badge variant="outline" className={`text-xs ml-auto ${getScoreTextColor(pageSpeedData.report.accessibilityScore)}`}>
+                                  {getScoreText(pageSpeedData.report.accessibilityScore)}
                                 </Badge>
                               </div>
-                              
+
                               {/* Alt Text Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
@@ -913,7 +1395,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                   {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'Düşük'}
                                 </Badge>
                               </div>
-                              
+
                               {/* Screen Reader Compatibility */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
@@ -947,9 +1429,9 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       </CardHeader>
                       <CardContent className="space-y-3">
                         {/* Overall Assessment */}
-                        <div className="p-3 bg-gray-50 rounded-lg">
-                          <h4 className="text-lg font-bold text-gray-800">
-                            {combinedReport.scoreLevel.charAt(0).toUpperCase() + combinedReport.scoreLevel.slice(1)} - {combinedReport.overallScore}/100
+                        <div className={`p-3 rounded-lg ${getScoreBg(combinedReport.overallScore)}`}>
+                          <h4 className={`text-lg font-bold ${getScoreTextColor(combinedReport.overallScore)}`}>
+                            {getScoreText(combinedReport.overallScore)} - {combinedReport.overallScore}/100
                           </h4>
                         </div>
 
@@ -986,40 +1468,34 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                         {/* Detailed Scores */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                           {seoData?.report?.overallScore !== undefined && (
-                            <div className="text-center p-3 bg-blue-50 rounded-lg">
-                              <div className="text-2xl font-bold text-blue-600">{seoData.report.overallScore}</div>
-                              <div className="text-sm text-blue-700">AI SEO Skoru</div>
-                              <div className="text-xs text-blue-600">{seoData.report.scoreLevel}</div>
+                            <div className={`text-center p-3 rounded-lg ${getScoreBg(seoData.report.overallScore)}`}>
+                              <div className={`text-2xl font-bold ${getScoreColor(seoData.report.overallScore)}`}>{seoData.report.overallScore}</div>
+                              <div className={`text-sm ${getScoreTextColor(seoData.report.overallScore)}`}>AI SEO Skoru</div>
+                              <div className={`text-xs ${getScoreTextColor(seoData.report.overallScore)}`}>{getScoreText(seoData.report.overallScore)}</div>
                             </div>
                           )}
                           {onPageData?.report?.overallScore !== undefined && (
-                            <div className="text-center p-3 bg-orange-50 rounded-lg">
-                              <div className="text-2xl font-bold text-orange-600">{onPageData.report.overallScore}</div>
-                              <div className="text-sm text-orange-700">On-Page SEO</div>
-                              <div className="text-xs text-orange-600">{onPageData.report.scoreLevel}</div>
+                            <div className={`text-center p-3 rounded-lg ${getScoreBg(onPageData.report.overallScore)}`}>
+                              <div className={`text-2xl font-bold ${getScoreColor(onPageData.report.overallScore)}`}>{onPageData.report.overallScore}</div>
+                              <div className={`text-sm ${getScoreTextColor(onPageData.report.overallScore)}`}>On-Page SEO</div>
+                              <div className={`text-xs ${getScoreTextColor(onPageData.report.overallScore)}`}>{getScoreText(onPageData.report.overallScore)}</div>
                             </div>
                           )}
                           {pageSpeedData?.performanceMetrics?.performanceScore !== undefined && (
-                            <div className="text-center p-3 bg-green-50 rounded-lg">
-                              <div className="text-2xl font-bold text-green-600">{pageSpeedData.performanceMetrics.performanceScore}</div>
-                              <div className="text-sm text-green-700">Performans</div>
-                              <div className="text-xs text-green-600">
-                                {pageSpeedData.performanceMetrics.performanceScore >= 95 ? 'Mükemmel' :
-                                 pageSpeedData.performanceMetrics.performanceScore >= 85 ? 'Çok İyi' :
-                                 pageSpeedData.performanceMetrics.performanceScore >= 70 ? 'İyi' :
-                                 pageSpeedData.performanceMetrics.performanceScore >= 50 ? 'Orta' : 'Zayıf'}
+                            <div className={`text-center p-3 rounded-lg ${getScoreBg(pageSpeedData.performanceMetrics.performanceScore)}`}>
+                              <div className={`text-2xl font-bold ${getScoreColor(pageSpeedData.performanceMetrics.performanceScore)}`}>{pageSpeedData.performanceMetrics.performanceScore}</div>
+                              <div className={`text-sm ${getScoreTextColor(pageSpeedData.performanceMetrics.performanceScore)}`}>Performans</div>
+                              <div className={`text-xs ${getScoreTextColor(pageSpeedData.performanceMetrics.performanceScore)}`}>
+                                {getScoreText(pageSpeedData.performanceMetrics.performanceScore)}
                               </div>
                             </div>
                           )}
                           {pageSpeedData?.report?.accessibilityScore !== undefined && (
-                            <div className="text-center p-3 bg-purple-50 rounded-lg">
-                              <div className="text-2xl font-bold text-purple-600">{pageSpeedData.report.accessibilityScore}</div>
-                              <div className="text-sm text-purple-700">Erişilebilirlik</div>
-                              <div className="text-xs text-purple-600">
-                                {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel' :
-                                 pageSpeedData.report.accessibilityScore >= 85 ? 'Çok İyi' :
-                                 pageSpeedData.report.accessibilityScore >= 70 ? 'İyi' :
-                                 pageSpeedData.report.accessibilityScore >= 50 ? 'Orta' : 'Zayıf'}
+                            <div className={`text-center p-3 rounded-lg ${getScoreBg(pageSpeedData.report.accessibilityScore)}`}>
+                              <div className={`text-2xl font-bold ${getScoreColor(pageSpeedData.report.accessibilityScore)}`}>{pageSpeedData.report.accessibilityScore}</div>
+                              <div className={`text-sm ${getScoreTextColor(pageSpeedData.report.accessibilityScore)}`}>Erişilebilirlik</div>
+                              <div className={`text-xs ${getScoreTextColor(pageSpeedData.report.accessibilityScore)}`}>
+                                {getScoreText(pageSpeedData.report.accessibilityScore)}
                               </div>
                             </div>
                           )}
@@ -1033,7 +1509,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                     <Button onClick={resetAnalysis} variant="outline">
                       Yeni Analiz
                     </Button>
-                   
+
                   </div>
 
                   {/* Sektör Bazlı Özel Yorum */}
@@ -1054,7 +1530,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                               <div key={index} className="flex items-start space-x-2 text-sm">
                                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                                 <span className="text-green-800 leading-relaxed">{insight}</span>
-                </div>
+                              </div>
                             ))}
                           </div>
                         </div>
@@ -1114,8 +1590,8 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                             )}
                           </div>
                         </div>
-            </CardContent>
-          </Card>
+                      </CardContent>
+                    </Card>
                   )}
                 </div>
               )}

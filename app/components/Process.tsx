@@ -1,3 +1,5 @@
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -169,6 +171,32 @@ const Process = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-16 text-center">
+          <div className="max-w-xl mx-auto space-y-4">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">
+                Sitenizi Hemen Test Edin
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                URL girin, anında rapor alın.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                const heroSection = document.getElementById('hero');
+                if (heroSection) {
+                  heroSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white font-medium rounded-lg hover:from-primary/90 hover:to-primary/70 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg text-sm"
+            >
+              <Search className="h-4 w-4 mr-2" />
+              Ücretsiz SEO Analizi Yap
+            </button>
           </div>
         </div>
 

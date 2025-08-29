@@ -5,7 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { 
   Mail, 
-  MapPin
+  MapPin,
+  Share2,
+  MessageCircle,
+  Twitter,
+  Facebook,
+  Linkedin
 } from 'lucide-react';
 
 const Footer = () => {
@@ -40,6 +45,20 @@ const Footer = () => {
     }
   };
 
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareText = 'Promind360 ile web sitenizin SEO performansını analiz edin!';
+  
+  const shareLinks = {
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`,
+    twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+  };
+
+  const handleShare = (platform: keyof typeof shareLinks) => {
+    window.open(shareLinks[platform], '_blank', 'width=600,height=400');
+  };
+
   return (
     <footer className="bg-muted/50 border-t">
       <div className="container mx-auto px-4 py-12">
@@ -56,8 +75,9 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Kapsamlı SEO analiz platformu ile web sitenizin performansını detaylı analiz edin. 
-              Gerçek zamanlı SEO denetimi, PageSpeed testi ve AI bot erişim analizi ile sitenizi optimize edin.
+              Fikirmax olarak, dijital dünyada işletmelerin başarısı için yenilikçi çözümler geliştiriyoruz. 
+              SEO analiz platformumuz ile web sitelerinizin arama motoru performansını optimize ederek, 
+              organik trafiğinizi artırmanıza ve online varlığınızı güçlendirmenize yardımcı oluyoruz.
             </p>
             
             {/* Contact Info */}
@@ -68,6 +88,44 @@ const Footer = () => {
                   <span>{info.value}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Share Section */}
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold mb-3 flex items-center">
+                <Share2 className="h-4 w-4 mr-2 text-primary" />
+                Siteyi Paylaş
+              </h4>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => handleShare('whatsapp')}
+                  className="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  aria-label="WhatsApp'ta paylaş"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleShare('twitter')}
+                  className="p-2 bg-blue-400 hover:bg-blue-500 text-white rounded-lg transition-colors"
+                  aria-label="Twitter'da paylaş"
+                >
+                  <Twitter className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleShare('facebook')}
+                  className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  aria-label="Facebook'ta paylaş"
+                >
+                  <Facebook className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleShare('linkedin')}
+                  className="p-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors"
+                  aria-label="LinkedIn'de paylaş"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -126,17 +184,17 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center space-x-4 md-pr-10">
-            <Link 
-              href="https://birimajans.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:text-primary transition-colors"
-            >
-              <Badge variant="outline" className="text-xs bg-yellow-300 text-yellow-800 px-4 border-full">
-                <span className="font-bold text-primary">B</span>
-                <span className="ml-1">Birimajans</span>
-              </Badge>
-            </Link>
+            <span className="text-xs text-muted-foreground">
+              Powered by{' '}
+              <Link 
+                href="https://fikirmax.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:underline transition-colors"
+              >
+                Fikirmax
+              </Link>
+            </span>
           </div>
         </div>
       </div>
