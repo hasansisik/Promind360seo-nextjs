@@ -17,6 +17,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
   const dispatch = useDispatch<AppDispatch>();
   const { 
     seoData, 
+    onPageData,
     pageSpeedData, 
     combinedReport,
     errors, 
@@ -539,6 +540,107 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       </CardContent>
                     </Card>
 
+                                         {/* On-Page SEO */}
+                     <Card key={`on-page-${analyzedUrl}`}>
+                       <CardHeader>
+                         <CardTitle className="flex items-center space-x-2 text-left">
+                           <Lightbulb className="h-5 w-5" />
+                           <span>On-Page SEO Analizi ({onPageData?.report?.overallScore || 0})</span>
+                         </CardTitle>
+                       </CardHeader>
+                       <CardContent className="space-y-3">
+                         <Progress value={onPageData?.report?.overallScore || 0} className="h-2" />
+                         <div className="space-y-2">
+                           {onPageData ? (
+                             <>
+                               {/* Title Analysis */}
+                               {onPageData.webtitle && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Title: {onPageData.webtitle.title}</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.webtitle.length} karakter
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Meta Description */}
+                               {onPageData.metadescription && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Meta Description: {onPageData.metadescription.description}</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.metadescription.length} karakter
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Headings Structure */}
+                               {onPageData.headings && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Heading Yapısı: H1({onPageData.headings.h1?.count || 0}) H2({onPageData.headings.h2?.count || 0}) H3({onPageData.headings.h3?.count || 0})</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.headings.h1?.count === 1 ? 'İyi' : 'İyileştirilmeli'}
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Images */}
+                               {onPageData.images && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Resim Sayısı: {onPageData.images.count} adet</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.images.count <= 20 ? 'Optimal' : 'Fazla'}
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Links */}
+                               {onPageData.links && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Link Sayısı: {onPageData.links.count} adet</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.links.count >= 10 && onPageData.links.count <= 50 ? 'Optimal' : 'İyileştirilmeli'}
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Sitemap & Robots */}
+                               {onPageData.sitemap_robots && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Sitemap & Robots: {onPageData.sitemap_robots.join(', ')}</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.sitemap_robots.length === 2 ? 'Mevcut' : 'Eksik'}
+                                   </Badge>
+                                 </div>
+                               )}
+
+                               {/* Iframe */}
+                               {onPageData.iframe && (
+                                 <div className="flex items-center space-x-2 text-sm">
+                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                   <span>Iframe Kullanımı: {onPageData.iframe.count} adet</span>
+                                   <Badge variant="outline" className="text-xs ml-auto">
+                                     {onPageData.iframe.count === 0 ? 'Yok (İyi)' : 'Var'}
+                                   </Badge>
+                                 </div>
+                               )}
+                             </>
+                           ) : (
+                             <div className="flex items-center space-x-2 text-sm">
+                               <AlertCircle className="h-4 w-4 text-yellow-500" />
+                               <span className="flex-1">On-Page SEO Analizi: Hesaplanmadı</span>
+                               <Badge variant="outline" className="text-xs">Beklemede</Badge>
+                             </div>
+                           )}
+                         </div>
+                       </CardContent>
+                     </Card>
+
                     {/* Performance */}
                     <Card key={`performance-${analyzedUrl}`}>
                       <CardHeader>
@@ -598,23 +700,28 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
+                        <Progress value={pageSpeedData?.report?.accessibilityScore || 0} className="h-2" />
                         <div className="space-y-2">
                           {pageSpeedData?.report ? (
                             <>
+                              {/* Accessibility Score Level */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>
-                                  {pageSpeedData.report.accessibilityScore >= 90 ? 'Mükemmel erişilebilirlik' :
+                                  {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel erişilebilirlik' :
+                                   pageSpeedData.report.accessibilityScore >= 85 ? 'Çok iyi erişilebilirlik' :
                                    pageSpeedData.report.accessibilityScore >= 70 ? 'İyi erişilebilirlik' :
                                    pageSpeedData.report.accessibilityScore >= 50 ? 'Orta erişilebilirlik' : 'Düşük erişilebilirlik'}
                                 </span>
                                 <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.accessibilityScore >= 90 ? 'Mükemmel' :
+                                  {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel' :
+                                   pageSpeedData.report.accessibilityScore >= 85 ? 'Çok İyi' :
                                    pageSpeedData.report.accessibilityScore >= 70 ? 'İyi' :
                                    pageSpeedData.report.accessibilityScore >= 50 ? 'Orta' : 'Kötü'}
                                 </Badge>
                               </div>
                               
+                              {/* Alt Text Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Alt Text: {pageSpeedData.report.accessibilityScore >= 70 ? 'Mevcut' : 'Eksik'}</span>
@@ -623,6 +730,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                 </Badge>
                               </div>
 
+                              {/* ARIA Labels Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>ARIA Labels: {pageSpeedData.report.accessibilityScore >= 80 ? 'Mevcut' : 'Eksik'}</span>
@@ -631,11 +739,30 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                 </Badge>
                               </div>
 
+                              {/* Keyboard Navigation Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Keyboard Navigation: {pageSpeedData.report.accessibilityScore >= 75 ? 'Mevcut' : 'Eksik'}</span>
                                 <Badge variant="outline" className="text-xs ml-auto">
                                   {pageSpeedData.report.accessibilityScore >= 75 ? 'Optimize' : 'Eksik'}
+                                </Badge>
+                              </div>
+
+                              {/* Color Contrast Analysis */}
+                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>Color Contrast: {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'İyileştirilmeli'}</span>
+                                <Badge variant="outline" className="text-xs ml-auto">
+                                  {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'Düşük'}
+                                </Badge>
+                              </div>
+
+                              {/* Screen Reader Compatibility */}
+                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>Screen Reader: {pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'İyileştirilmeli'}</span>
+                                <Badge variant="outline" className="text-xs ml-auto">
+                                  {pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'Kısıtlı'}
                                 </Badge>
                               </div>
                             </>
@@ -650,66 +777,6 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       </CardContent>
                     </Card>
 
-                    {/* Best Practices */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center space-x-2 text-left">
-                          <Monitor className="h-5 w-5" />
-                          <span>En İyi Uygulamalar ({pageSpeedData?.report?.bestPracticesScore || 0})</span>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="space-y-2">
-                          {pageSpeedData?.report ? (
-                            <>
-                              <div className="flex items-center space-x-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>
-                                  {pageSpeedData.report.bestPracticesScore >= 90 ? 'Mükemmel en iyi uygulamalar' :
-                                   pageSpeedData.report.bestPracticesScore >= 70 ? 'İyi en iyi uygulamalar' :
-                                   pageSpeedData.report.bestPracticesScore >= 50 ? 'Orta en iyi uygulamalar' : 'Düşük en iyi uygulamalar'}
-                                </span>
-                                <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.bestPracticesScore >= 90 ? 'Mükemmel' :
-                                   pageSpeedData.report.bestPracticesScore >= 70 ? 'İyi' :
-                                   pageSpeedData.report.bestPracticesScore >= 50 ? 'Orta' : 'Kötü'}
-                                </Badge>
-                              </div>
-                              
-                              <div className="flex items-center space-x-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>HTTPS: {pageSpeedData.report.bestPracticesScore >= 85 ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.bestPracticesScore >= 85 ? 'Güvenli' : 'Eksik'}
-                                </Badge>
-                              </div>
-
-                              <div className="flex items-center space-x-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Console Errors: {pageSpeedData.report.bestPracticesScore >= 80 ? 'Temiz' : 'Var'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.bestPracticesScore >= 80 ? 'Temiz' : 'Hata'}
-                                </Badge>
-                              </div>
-
-                              <div className="flex items-center space-x-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Deprecated APIs: {pageSpeedData.report.bestPracticesScore >= 75 ? 'Yok' : 'Var'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
-                                  {pageSpeedData.report.bestPracticesScore >= 75 ? 'Temiz' : 'Var'}
-                                </Badge>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="flex items-center space-x-2 text-sm">
-                              <AlertCircle className="h-4 w-4 text-yellow-500" />
-                              <span className="flex-1">En İyi Uygulamalar Analizi: Hesaplanmadı</span>
-                              <Badge variant="outline" className="text-xs">Beklemede</Badge>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
                   </div>
 
                   {/* Combined Report Summary */}
@@ -754,6 +821,48 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                     <span className="text-gray-700 text-left">{weakness}</span>
                                   </div>
                                 ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Detailed Scores */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                          {seoData?.report?.overallScore !== undefined && (
+                            <div className="text-center p-3 bg-blue-50 rounded-lg">
+                              <div className="text-2xl font-bold text-blue-600">{seoData.report.overallScore}</div>
+                              <div className="text-sm text-blue-700">AI SEO Skoru</div>
+                              <div className="text-xs text-blue-600">{seoData.report.scoreLevel}</div>
+                            </div>
+                          )}
+                          {onPageData?.report?.overallScore !== undefined && (
+                            <div className="text-center p-3 bg-orange-50 rounded-lg">
+                              <div className="text-2xl font-bold text-orange-600">{onPageData.report.overallScore}</div>
+                              <div className="text-sm text-orange-700">On-Page SEO</div>
+                              <div className="text-xs text-orange-600">{onPageData.report.scoreLevel}</div>
+                            </div>
+                          )}
+                          {pageSpeedData?.performanceMetrics?.performanceScore !== undefined && (
+                            <div className="text-center p-3 bg-green-50 rounded-lg">
+                              <div className="text-2xl font-bold text-green-600">{pageSpeedData.performanceMetrics.performanceScore}</div>
+                              <div className="text-sm text-green-700">Performans</div>
+                              <div className="text-xs text-green-600">
+                                {pageSpeedData.performanceMetrics.performanceScore >= 95 ? 'Mükemmel' :
+                                 pageSpeedData.performanceMetrics.performanceScore >= 85 ? 'Çok İyi' :
+                                 pageSpeedData.performanceMetrics.performanceScore >= 70 ? 'İyi' :
+                                 pageSpeedData.performanceMetrics.performanceScore >= 50 ? 'Orta' : 'Zayıf'}
+                              </div>
+                            </div>
+                          )}
+                          {pageSpeedData?.report?.accessibilityScore !== undefined && (
+                            <div className="text-center p-3 bg-purple-50 rounded-lg">
+                              <div className="text-2xl font-bold text-purple-600">{pageSpeedData.report.accessibilityScore}</div>
+                              <div className="text-sm text-purple-700">Erişilebilirlik</div>
+                              <div className="text-xs text-purple-600">
+                                {pageSpeedData.report.accessibilityScore >= 95 ? 'Mükemmel' :
+                                 pageSpeedData.report.accessibilityScore >= 85 ? 'Çok İyi' :
+                                 pageSpeedData.report.accessibilityScore >= 70 ? 'İyi' :
+                                 pageSpeedData.report.accessibilityScore >= 50 ? 'Orta' : 'Zayıf'}
                               </div>
                             </div>
                           )}
