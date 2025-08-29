@@ -1088,9 +1088,9 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
                   {/* Sektör Bazlı Özel Yorum */}
                   {selectedSector && selectedSector !== 'other' && sectorInsights[selectedSector as keyof typeof sectorInsights] && (
-                    <Card className="border-blue-200 bg-blue-50">
+                    <Card className="border-green-200 bg-green-50">
                       <CardHeader>
-                        <CardTitle className="flex items-center space-x-2 text-blue-800">
+                        <CardTitle className="flex items-center space-x-2 text-green-800">
                           <Target className="h-5 w-5" />
                           <span>{sectorInsights[selectedSector as keyof typeof sectorInsights].title}</span>
                         </CardTitle>
@@ -1098,12 +1098,12 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       <CardContent className="space-y-4">
                         {/* Sektör İçgörüleri */}
                         <div>
-                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör İçgörüleri:</h4>
+                          <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör İçgörüleri:</h4>
                           <div className="space-y-2">
                             {sectorInsights[selectedSector as keyof typeof sectorInsights].insights.map((insight, index) => (
                               <div key={index} className="flex items-start space-x-2 text-sm">
-                                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                                <span className="text-blue-800 leading-relaxed">{insight}</span>
+                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <span className="text-green-800 leading-relaxed">{insight}</span>
                               </div>
                             ))}
                           </div>
@@ -1111,21 +1111,21 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
                         {/* Sektör Önerileri */}
                         <div>
-                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör Özel Önerileri:</h4>
+                          <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör Özel Önerileri:</h4>
                           <div className="space-y-2">
                             {sectorInsights[selectedSector as keyof typeof sectorInsights].recommendations.map((recommendation, index) => (
                               <div key={index} className="flex items-start space-x-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                                <span className="text-blue-800 leading-relaxed">{recommendation}</span>
+                                <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-green-800 leading-relaxed">{recommendation}</span>
                               </div>
                             ))}
                           </div>
                         </div>
 
                         {/* Sektör Skor Değerlendirmesi */}
-                        <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
-                          <h4 className="text-sm font-semibold text-blue-700 mb-2">Sektör Bazlı Değerlendirme:</h4>
-                          <div className="text-sm text-blue-800 space-y-1">
+                        <div className="mt-4 p-3 bg-white rounded-lg border border-green-200">
+                          <h4 className="text-sm font-semibold text-green-700 mb-2">Sektör Bazlı Değerlendirme:</h4>
+                          <div className="text-sm text-green-800 space-y-1">
                             {selectedSector === 'ecommerce' && (
                               <p>E-ticaret siteniz için özellikle <strong>sayfa yükleme hızı</strong> ve <strong>mobil uyumluluk</strong> kritik öneme sahiptir. Mevcut performans skorunuz {pageSpeedData?.performanceMetrics?.performanceScore || 0}/100, bu sektör için {pageSpeedData?.performanceMetrics?.performanceScore >= 70 ? 'kabul edilebilir' : 'iyileştirilmesi gereken'} bir seviyededir.</p>
                             )}
