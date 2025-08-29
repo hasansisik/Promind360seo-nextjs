@@ -30,20 +30,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
     analyzedUrl 
   } = useSelector((state: RootState) => state.seo);
 
-  // Debug logging
-  useEffect(() => {
-    console.log('Hero Redux State:', {
-      seoData,
-      pageSpeedData,
-      errors,
-      isLoading,
-      isAnalyzing,
-      progress,
-      currentStep,
-      analyzedUrl,
-      timestamp
-    });
-  }, [seoData, pageSpeedData, errors, isLoading, isAnalyzing, progress, currentStep, analyzedUrl, timestamp]);
+
   
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
@@ -374,23 +361,18 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
         const result = await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
         apiCompleted = true;
         
-        console.log('API Analysis completed. Result:', result);
 
         // Wait for progress simulation to complete
         if (!progressCompleted) {
-          console.log('Waiting for progress animation to complete...');
           await progressPromise;
         }
 
         // Show results immediately after progress is complete
-        console.log('Showing results...');
         setShowResults(true);
       } catch (error) {
-        console.error('API Analysis failed:', error);
         
         // Wait for progress simulation to complete
         if (!progressCompleted) {
-          console.log('Waiting for progress animation to complete...');
           await progressPromise;
         }
 
@@ -469,7 +451,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                       type="url"
                       value={websiteUrl}
                       onChange={(e) => setWebsiteUrl(e.target.value)}
-                      placeholder="https://yoursite.com"
+                      placeholder="https://orneksite.com"
                       className="pl-12 pr-10 h-12 text-base"
                     />
                     {websiteUrl && (

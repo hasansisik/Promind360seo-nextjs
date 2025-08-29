@@ -117,7 +117,7 @@ export const analyzeSEO = createAsyncThunk(
   "seo/analyze",
   async ({ url, sector }: SEOAnalysisPayload, thunkAPI) => {
     try {
-      console.log('Starting SEO analysis for:', url);
+
       
       const result: SEOAnalysisResult = {
         seoData: null,
@@ -133,56 +133,56 @@ export const analyzeSEO = createAsyncThunk(
 
       // First, make SEO analysis call (faster)
       try {
-        console.log('Making SEO API call...');
+
         const seoResponse = await axios.get(`http://localhost:3040/v1/seo/analyze?url=${encodeURIComponent(url)}`);
         const seoResult = seoResponse.data;
         if (seoResult.success) {
           result.seoData = seoResult.data;
-          console.log('SEO analysis completed successfully');
+
         } else {
           result.errors.seo = seoResult.message;
-          console.error('SEO API returned error:', seoResult.message);
+
         }
       } catch (error: any) {
         const errorMessage = error.response?.data?.message || error.message || 'SEO analysis failed';
         result.errors.seo = errorMessage;
-        console.error('SEO analysis error:', errorMessage);
+
       }
 
       // Then, make On-Page SEO analysis call
       try {
-        console.log('Making On-Page SEO API call...');
+
         const onPageResponse = await axios.get(`http://localhost:3040/v1/seo/onpage?url=${encodeURIComponent(url)}`);
         const onPageResult = onPageResponse.data;
         if (onPageResult.success) {
           result.onPageData = onPageResult.data;
-          console.log('On-Page SEO analysis completed successfully');
+
         } else {
           result.errors.onPage = onPageResult.message;
-          console.error('On-Page SEO API returned error:', onPageResult.message);
+
         }
       } catch (error: any) {
         const errorMessage = error.response?.data?.message || error.message || 'On-Page SEO analysis failed';
         result.errors.onPage = errorMessage;
-        console.error('On-Page SEO analysis error:', errorMessage);
+
       }
 
       // Finally, make PageSpeed analysis call (slower, but we wait for it)
       try {
-        console.log('Making PageSpeed API call...');
+
         const pageSpeedResponse = await axios.get(`http://localhost:3040/v1/seo/pagespeed?url=${encodeURIComponent(url)}`);
         const pageSpeedResult = pageSpeedResponse.data;
         if (pageSpeedResult.success) {
           result.pageSpeedData = pageSpeedResult.data;
-          console.log('PageSpeed analysis completed successfully');
+
         } else {
           result.errors.pageSpeed = pageSpeedResult.message;
-          console.error('PageSpeed API returned error:', pageSpeedResult.message);
+
         }
       } catch (error: any) {
         const errorMessage = error.response?.data?.message || error.message || 'PageSpeed analysis failed';
         result.errors.pageSpeed = errorMessage;
-        console.error('PageSpeed analysis error:', errorMessage);
+
       }
 
       // If all APIs fail, throw error to show to user
