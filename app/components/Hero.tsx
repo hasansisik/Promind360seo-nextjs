@@ -273,9 +273,9 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
   };
 
   const features = [
-    { icon: TrendingUp, title: 'Veri Odaklı', description: 'Analitik tabanlı stratejiler' },
-    { icon: Zap, title: 'Hızlı Sonuç', description: '30 günde ilk sonuçlar' },
-    { icon: Target, title: 'Hedef Odaklı', description: 'Sektöre özel yaklaşım' }
+    { icon: TrendingUp, title: 'Detaylı Analiz', description: 'Kapsamlı SEO raporu' },
+    { icon: Zap, title: 'Anında Sonuç', description: 'Gerçek zamanlı analiz' },
+    { icon: Target, title: 'Sektör Odaklı', description: 'Özel SEO önerileri' }
   ];
 
   // Mock analysis results
@@ -433,16 +433,16 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
           {/* Main Heading */}
           <div className="space-y-4">
             <Badge variant="secondary" className="mb-4">
-              Modern SEO Çözümleri
+              Kapsamlı SEO Analizi
             </Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 SEO
               </span>
-              <span className="text-foreground"> Marketing & Agency</span>
+              <span className="text-foreground"> Analiz & Optimizasyon</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Ensuring the best return on investment for your bespoke SEO Campaign requirement.
+              Web sitenizin SEO performansını detaylı analiz edin ve arama motoru sıralamalarınızı iyileştirin.
             </p>
           </div>
 
@@ -842,11 +842,11 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                <AlertCircle className="h-4 w-4 text-yellow-500" />
                                <span className="flex-1">On-Page SEO Analizi: Hesaplanmadı</span>
                                <Badge variant="outline" className="text-xs">Beklemede</Badge>
-                             </div>
-                           )}
-                         </div>
-                       </CardContent>
-                     </Card>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
 
                     {/* Performance */}
                     <Card key={`performance-${analyzedUrl}`}>
@@ -963,7 +963,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                                   {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'Düşük'}
                                 </Badge>
                               </div>
-
+                              
                               {/* Screen Reader Compatibility */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
@@ -1104,7 +1104,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                               <div key={index} className="flex items-start space-x-2 text-sm">
                                 <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                                 <span className="text-green-800 leading-relaxed">{insight}</span>
-                              </div>
+                </div>
                             ))}
                           </div>
                         </div>
@@ -1164,8 +1164,8 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
                             )}
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
+            </CardContent>
+          </Card>
                   )}
                 </div>
               )}
