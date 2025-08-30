@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { analyzeSEO, resetSEOData } from '@/redux/actions/seoActions';
@@ -16,6 +16,7 @@ import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, 
 
 const Hero = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const resultsRef = useRef<HTMLDivElement>(null);
   const {
     seoData,
     onPageData,
@@ -36,6 +37,18 @@ const Hero = () => {
   const [selectedSector, setSelectedSector] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [showDemoDialog, setShowDemoDialog] = useState(false);
+
+  // Auto-scroll to results when analysis is completed
+  useEffect(() => {
+    if (showResults && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100); // Small delay to ensure DOM is updated
+    }
+  }, [showResults]);
 
   const sectors = [
     { value: 'ecommerce', label: 'E-ticaret' },
@@ -444,6 +457,69 @@ const Hero = () => {
     return 'text-red-700';
   };
 
+  // Badge renk fonksiyonları
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'mevcut':
+      case 'izin veriliyor':
+      case 'uygun':
+      case 'optimal':
+      case 'iyi':
+      case 'mükemmel':
+      case 'ai dostu':
+      case 'seo':
+      case 'optimize':
+      case 'uyumlu':
+        return 'default';
+      case 'eksik':
+      case 'kısıtlı':
+      case 'düşük':
+      case 'kötü':
+      case 'var':
+      case 'fazla':
+      case 'uzun':
+      case 'iyileştirilmeli':
+      case 'kısıtlı':
+        return 'destructive';
+      case 'orta':
+      case 'kabul edilebilir':
+        return 'secondary';
+      default:
+        return 'outline';
+    }
+  };
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'mevcut':
+      case 'izin veriliyor':
+      case 'uygun':
+      case 'optimal':
+      case 'iyi':
+      case 'mükemmel':
+      case 'ai dostu':
+      case 'seo':
+      case 'optimize':
+      case 'uyumlu':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'eksik':
+      case 'kısıtlı':
+      case 'düşük':
+      case 'kötü':
+      case 'var':
+      case 'fazla':
+      case 'uzun':
+      case 'iyileştirilmeli':
+      case 'kısıtlı':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'orta':
+      case 'kabul edilebilir':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
 
 
   return (
@@ -561,47 +637,47 @@ const Hero = () => {
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>AI Bot Erişimi: İzin Veriliyor</span>
-                          <Badge variant="outline" className="text-xs ml-auto">AI Dostu</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('AI Dostu')}`}>AI Dostu</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Robots.txt: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('SEO')}`}>SEO</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Meta Tags: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                          <span>Meta Etiketleri: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimize')}`}>Optimize</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Title Tag: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                          <span>Başlık Etiketi: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('SEO')}`}>SEO</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Title Uzunluğu: Uygun</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                          <span>Başlık Uzunluğu: Uygun</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>Optimal</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Description: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                          <span>Açıklama: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('SEO')}`}>SEO</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Keywords: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">SEO</Badge>
+                          <span>Anahtar Kelimeler: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('SEO')}`}>SEO</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>CTA Varlığı: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimize')}`}>Optimize</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Anahtar Kelime Yoğunluğu: Uygun</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>Optimal</Badge>
                         </div>
                       </div>
                     </CardContent>
@@ -618,44 +694,44 @@ const Hero = () => {
                     <CardContent className="space-y-3">
                       <Progress value={demoData.onPageData.report.overallScore} className="h-2" />
                       <div className="space-y-2">
-                        <div className="flex items-center space-x-2 text-sm">
+                                                <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Title: {demoData.onPageData.webtitle.title}</span>
-                          <Badge variant="outline" className="text-xs ml-auto">
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>
                             {demoData.onPageData.webtitle.length} karakter
                           </Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Meta Description: {demoData.onPageData.metadescription.description}</span>
-                          <Badge variant="outline" className="text-xs ml-auto">
+                          <span>Meta Açıklama: {demoData.onPageData.metadescription.description}</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>
                             {demoData.onPageData.metadescription.length} karakter
                           </Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Heading Yapısı: H1({demoData.onPageData.headings.h1.count}) H2({demoData.onPageData.headings.h2.count}) H3({demoData.onPageData.headings.h3.count})</span>
-                          <Badge variant="outline" className="text-xs ml-auto">İyi</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('İyi')}`}>İyi</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Resim Sayısı: {demoData.onPageData.images.count} adet</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>Optimal</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Link Sayısı: {demoData.onPageData.links.count} adet</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimal</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimal')}`}>Optimal</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Sitemap & Robots: {demoData.onPageData.sitemap_robots.join(', ')}</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Mevcut</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Mevcut')}`}>Mevcut</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           <span>Iframe Kullanımı: {demoData.onPageData.iframe.count} adet</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Yok (İyi)</Badge>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Yok (İyi)')}`}>Yok (İyi)</Badge>
                         </div>
                       </div>
                     </CardContent>
@@ -673,31 +749,31 @@ const Hero = () => {
                       <Progress value={demoData.pageSpeedData.performanceMetrics.performanceScore} className="h-2" />
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-sm">
-                          <span>First Contentful Paint</span>
+                          <span>İlk İçerik Boyama</span>
                           <span className="font-mono text-green-600">
                             {demoData.pageSpeedData.performanceMetrics.firstContentfulPaint}
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span>Largest Contentful Paint</span>
+                          <span>En Büyük İçerik Boyama</span>
                           <span className="font-mono text-green-600">
                             {demoData.pageSpeedData.performanceMetrics.largestContentfulPaint}
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span>Speed Index</span>
+                          <span>Hız Endeksi</span>
                           <span className="font-mono text-green-600">
                             {demoData.pageSpeedData.performanceMetrics.speedIndex}
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span>Total Blocking Time</span>
+                          <span>Toplam Engelleme Süresi</span>
                           <span className="font-mono text-green-600">
                             {demoData.pageSpeedData.performanceMetrics.totalBlockingTime}
                           </span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span>Cumulative Layout Shift</span>
+                          <span>Kümülatif Düzen Kayması</span>
                           <span className="font-mono text-green-600">
                             {demoData.pageSpeedData.performanceMetrics.cumulativeLayoutShift}
                           </span>
@@ -728,28 +804,28 @@ const Hero = () => {
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Alt Text: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                          <span>Alt Metni: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimize')}`}>Optimize</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>ARIA Labels: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                          <span>ARIA Etiketleri: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimize')}`}>Optimize</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Keyboard Navigation: Mevcut</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Optimize</Badge>
+                          <span>Klavye Navigasyonu: Mevcut</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Optimize')}`}>Optimize</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Color Contrast: Uygun</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Uygun</Badge>
+                          <span>Renk Kontrastı: Uygun</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Uygun')}`}>Uygun</Badge>
                         </div>
                         <div className="flex items-center space-x-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span>Screen Reader: Uyumlu</span>
-                          <Badge variant="outline" className="text-xs ml-auto">Uyumlu</Badge>
+                          <span>Ekran Okuyucu: Uyumlu</span>
+                          <Badge className={`text-xs ml-auto ${getStatusBadgeColor('Uyumlu')}`}>Uyumlu</Badge>
                         </div>
                       </div>
                     </CardContent>
@@ -992,7 +1068,7 @@ const Hero = () => {
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div ref={resultsRef} className="space-y-6">
                   {/* Results Header */}
                   <div className="text-center space-y-2" key={`results-${analyzedUrl}`}>
                     <h3 className="text-2xl font-bold">Analiz Sonuçları</h3>
@@ -1105,7 +1181,7 @@ const Hero = () => {
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>AI Bot Erişimi: {seoData.ai_bots_allowed ? 'İzin Veriliyor' : 'Kısıtlı'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.ai_bots_allowed ? 'AI Dostu' : 'Kısıtlı')}`}>
                                   {seoData.ai_bots_allowed ? 'AI Dostu' : 'Kısıtlı'}
                                 </Badge>
                               </div>
@@ -1113,47 +1189,47 @@ const Hero = () => {
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Robots.txt: {seoData.robots_found ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.robots_found ? 'SEO' : 'Eksik')}`}>
                                   {seoData.robots_found ? 'SEO' : 'Eksik'}
                                 </Badge>
                               </div>
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Meta Tags: {seoData.meta_tags ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Meta Etiketleri: {seoData.meta_tags ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.meta_tags ? 'Optimize' : 'Eksik')}`}>
                                   {seoData.meta_tags ? 'Optimize' : 'Eksik'}
                                 </Badge>
                               </div>
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Title Tag: {seoData.title ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Başlık Etiketi: {seoData.title ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.title ? 'SEO' : 'Eksik')}`}>
                                   {seoData.title ? 'SEO' : 'Eksik'}
                                 </Badge>
                               </div>
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Title Uzunluğu: {seoData.title ? (seoData.title.length <= 60 ? 'Uygun' : 'Uzun') : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Başlık Uzunluğu: {seoData.title ? (seoData.title.length <= 60 ? 'Uygun' : 'Uzun') : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.title ? (seoData.title.length <= 60 ? 'Optimal' : 'Uzun') : 'Eksik')}`}>
                                   {seoData.title ? (seoData.title.length <= 60 ? 'Optimal' : 'Uzun') : 'Eksik'}
                                 </Badge>
                               </div>
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Description: {seoData.description ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Açıklama: {seoData.description ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.description ? 'SEO' : 'Eksik')}`}>
                                   {seoData.description ? 'SEO' : 'Eksik'}
                                 </Badge>
                               </div>
 
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Keywords: {seoData.keywords ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Anahtar Kelimeler: {seoData.keywords ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.keywords ? 'SEO' : 'Eksik')}`}>
                                   {seoData.keywords ? 'SEO' : 'Eksik'}
                                 </Badge>
                               </div>
@@ -1161,7 +1237,7 @@ const Hero = () => {
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>CTA Varlığı: {seoData.cta_buttons ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.cta_buttons ? 'Optimize' : 'Eksik')}`}>
                                   {seoData.cta_buttons ? 'Optimize' : 'Eksik'}
                                 </Badge>
                               </div>
@@ -1169,7 +1245,7 @@ const Hero = () => {
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                 <span>Anahtar Kelime Yoğunluğu: {seoData.keyword_density ? 'Uygun' : 'Düşük'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(seoData.keyword_density ? 'Optimal' : 'Düşük')}`}>
                                   {seoData.keyword_density ? 'Optimal' : 'Düşük'}
                                 </Badge>
                               </div>
@@ -1203,7 +1279,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Title: {onPageData.webtitle.title}</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.webtitle.length <= 60 ? 'Optimal' : 'Uzun')}`}>
                                     {onPageData.webtitle.length} karakter
                                   </Badge>
                                 </div>
@@ -1211,13 +1287,13 @@ const Hero = () => {
 
                               {/* Meta Description */}
                               {onPageData.metadescription && (
-                                <div className="flex items-center space-x-2 text-sm">
-                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                  <span>Meta Description: {onPageData.metadescription.description}</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
-                                    {onPageData.metadescription.length} karakter
-                                  </Badge>
-                                </div>
+                                                              <div className="flex items-center space-x-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                <span>Meta Açıklama: {onPageData.metadescription.description}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.metadescription.length <= 160 ? 'Optimal' : 'Uzun')}`}>
+                                  {onPageData.metadescription.length} karakter
+                                </Badge>
+                              </div>
                               )}
 
                               {/* Headings Structure */}
@@ -1225,7 +1301,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Heading Yapısı: H1({onPageData.headings.h1?.count || 0}) H2({onPageData.headings.h2?.count || 0}) H3({onPageData.headings.h3?.count || 0})</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.headings.h1?.count === 1 ? 'İyi' : 'İyileştirilmeli')}`}>
                                     {onPageData.headings.h1?.count === 1 ? 'İyi' : 'İyileştirilmeli'}
                                   </Badge>
                                 </div>
@@ -1236,7 +1312,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Resim Sayısı: {onPageData.images.count} adet</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.images.count <= 20 ? 'Optimal' : 'Fazla')}`}>
                                     {onPageData.images.count <= 20 ? 'Optimal' : 'Fazla'}
                                   </Badge>
                                 </div>
@@ -1247,7 +1323,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Link Sayısı: {onPageData.links.count} adet</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.links.count >= 10 && onPageData.links.count <= 50 ? 'Optimal' : 'İyileştirilmeli')}`}>
                                     {onPageData.links.count >= 10 && onPageData.links.count <= 50 ? 'Optimal' : 'İyileştirilmeli'}
                                   </Badge>
                                 </div>
@@ -1258,7 +1334,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Sitemap & Robots: {onPageData.sitemap_robots.join(', ')}</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.sitemap_robots.length === 2 ? 'Mevcut' : 'Eksik')}`}>
                                     {onPageData.sitemap_robots.length === 2 ? 'Mevcut' : 'Eksik'}
                                   </Badge>
                                 </div>
@@ -1269,7 +1345,7 @@ const Hero = () => {
                                 <div className="flex items-center space-x-2 text-sm">
                                   <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                                   <span>Iframe Kullanımı: {onPageData.iframe.count} adet</span>
-                                  <Badge variant="outline" className="text-xs ml-auto">
+                                  <Badge className={`text-xs ml-auto ${getStatusBadgeColor(onPageData.iframe.count === 0 ? 'Yok (İyi)' : 'Var')}`}>
                                     {onPageData.iframe.count === 0 ? 'Yok (İyi)' : 'Var'}
                                   </Badge>
                                 </div>
@@ -1297,36 +1373,36 @@ const Hero = () => {
                       <CardContent className="space-y-3">
                         <Progress value={pageSpeedData?.performanceMetrics?.performanceScore || 0} className="h-2" />
                         <div className="space-y-2">
-                          <div className="flex justify-between items-center text-sm">
-                            <span>First Contentful Paint</span>
-                            <span className="font-mono text-green-600">
-                              {pageSpeedData?.performanceMetrics?.firstContentfulPaint || 'Hesaplanmadı'}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span>Largest Contentful Paint</span>
-                            <span className="font-mono text-green-600">
-                              {pageSpeedData?.performanceMetrics?.largestContentfulPaint || 'Hesaplanmadı'}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span>Speed Index</span>
-                            <span className="font-mono text-green-600">
-                              {pageSpeedData?.performanceMetrics?.speedIndex || 'Hesaplanmadı'}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span>Total Blocking Time</span>
-                            <span className="font-mono text-green-600">
-                              {pageSpeedData?.performanceMetrics?.totalBlockingTime || 'Hesaplanmadı'}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span>Cumulative Layout Shift</span>
-                            <span className="font-mono text-green-600">
-                              {pageSpeedData?.performanceMetrics?.cumulativeLayoutShift || 'Hesaplanmadı'}
-                            </span>
-                          </div>
+                                                  <div className="flex justify-between items-center text-sm">
+                          <span>İlk İçerik Boyama</span>
+                          <span className="font-mono text-green-600">
+                            {pageSpeedData?.performanceMetrics?.firstContentfulPaint || 'Hesaplanmadı'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>En Büyük İçerik Boyama</span>
+                          <span className="font-mono text-green-600">
+                            {pageSpeedData?.performanceMetrics?.largestContentfulPaint || 'Hesaplanmadı'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Hız Endeksi</span>
+                          <span className="font-mono text-green-600">
+                            {pageSpeedData?.performanceMetrics?.speedIndex || 'Hesaplanmadı'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Toplam Engelleme Süresi</span>
+                          <span className="font-mono text-green-600">
+                            {pageSpeedData?.performanceMetrics?.totalBlockingTime || 'Hesaplanmadı'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                          <span>Kümülatif Düzen Kayması</span>
+                          <span className="font-mono text-green-600">
+                            {pageSpeedData?.performanceMetrics?.cumulativeLayoutShift || 'Hesaplanmadı'}
+                          </span>
+                        </div>
                         </div>
 
                         {/* Performance Score Details */}
@@ -1363,8 +1439,8 @@ const Hero = () => {
                               {/* Alt Text Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Alt Text: {pageSpeedData.report.accessibilityScore >= 70 ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Alt Metni: {pageSpeedData.report.accessibilityScore >= 70 ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(pageSpeedData.report.accessibilityScore >= 70 ? 'Optimize' : 'Eksik')}`}>
                                   {pageSpeedData.report.accessibilityScore >= 70 ? 'Optimize' : 'Eksik'}
                                 </Badge>
                               </div>
@@ -1372,8 +1448,8 @@ const Hero = () => {
                               {/* ARIA Labels Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>ARIA Labels: {pageSpeedData.report.accessibilityScore >= 80 ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>ARIA Etiketleri: {pageSpeedData.report.accessibilityScore >= 80 ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(pageSpeedData.report.accessibilityScore >= 80 ? 'Optimize' : 'Eksik')}`}>
                                   {pageSpeedData.report.accessibilityScore >= 80 ? 'Optimize' : 'Eksik'}
                                 </Badge>
                               </div>
@@ -1381,8 +1457,8 @@ const Hero = () => {
                               {/* Keyboard Navigation Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Keyboard Navigation: {pageSpeedData.report.accessibilityScore >= 75 ? 'Mevcut' : 'Eksik'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Klavye Navigasyonu: {pageSpeedData.report.accessibilityScore >= 75 ? 'Mevcut' : 'Eksik'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(pageSpeedData.report.accessibilityScore >= 75 ? 'Optimize' : 'Eksik')}`}>
                                   {pageSpeedData.report.accessibilityScore >= 75 ? 'Optimize' : 'Eksik'}
                                 </Badge>
                               </div>
@@ -1390,8 +1466,8 @@ const Hero = () => {
                               {/* Color Contrast Analysis */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Color Contrast: {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'İyileştirilmeli'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Renk Kontrastı: {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'İyileştirilmeli'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'Düşük')}`}>
                                   {pageSpeedData.report.accessibilityScore >= 85 ? 'Uygun' : 'Düşük'}
                                 </Badge>
                               </div>
@@ -1399,8 +1475,8 @@ const Hero = () => {
                               {/* Screen Reader Compatibility */}
                               <div className="flex items-center space-x-2 text-sm">
                                 <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                <span>Screen Reader: {pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'İyileştirilmeli'}</span>
-                                <Badge variant="outline" className="text-xs ml-auto">
+                                <span>Ekran Okuyucu: {pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'İyileştirilmeli'}</span>
+                                <Badge className={`text-xs ml-auto ${getStatusBadgeColor(pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'Kısıtlı')}`}>
                                   {pageSpeedData.report.accessibilityScore >= 80 ? 'Uyumlu' : 'Kısıtlı'}
                                 </Badge>
                               </div>
