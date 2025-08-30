@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   GalleryVerticalEnd,
   Settings2,
-  LogOut,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"

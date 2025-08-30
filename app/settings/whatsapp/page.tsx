@@ -67,8 +67,8 @@ export default function WhatsAppSettingsPage() {
     try {
       await dispatch(editProfile({ whatsappNumber: cleanNumber })).unwrap();
       showToastMessage('WhatsApp numarası başarıyla güncellendi', 'success');
-    } catch (error: any) {
-      showToastMessage(error || 'Güncelleme başarısız', 'error');
+    } catch (error: unknown) {
+      showToastMessage((error as string) || 'Güncelleme başarısız', 'error');
     }
   };
 

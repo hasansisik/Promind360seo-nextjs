@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, BarChart3, Globe, Smartphone, Lightbulb, Play } from 'lucide-react';
 
 const Hero = () => {
@@ -31,9 +31,6 @@ const Hero = () => {
     timestamp,
     analyzedUrl
   } = useSelector((state: RootState) => state.seo);
-
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.user);
-
 
 
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -76,7 +73,7 @@ const Hero = () => {
       insights: [
         'E-ticaret siteleri için sayfa yükleme hızı kritik öneme sahiptir. Müşteriler 3 saniyeden fazla beklemek istemez.',
         'Ürün sayfalarında detaylı meta açıklamaları ve optimize edilmiş görseller satış oranlarını artırır.',
-        'Mobil uyumluluk e-ticaret başarısının %60\'ını oluşturur.',
+        'Mobil uyumluluk e-ticaret başarısının %60&apos;ını oluşturur.',
         'Güvenlik sertifikaları (SSL, PCI DSS) müşteri güvenini artırır.',
         'Arama motoru optimizasyonu ile organik trafik %40 artabilir.'
       ],
@@ -354,17 +351,15 @@ const Hero = () => {
       dispatch({ type: 'seo/setAnalyzing', payload: true });
 
       // Create search record (now public - no authentication required)
-      let searchId = null;
       try {
-        const searchResult = await dispatch(createSearch({ url: websiteUrl, sector: selectedSector }));
-        searchId = searchResult.payload?.data?._id;
+        await dispatch(createSearch({ url: websiteUrl, sector: selectedSector }));
         setSearchCreated(true);
         // Clear the notification after 3 seconds
         setTimeout(() => setSearchCreated(false), 3000);
-      } catch (error) {
-        console.warn('Failed to create search record:', error);
-        // Continue with SEO analysis even if search record creation fails
-      }
+              } catch {
+          console.warn('Failed to create search record');
+          // Continue with SEO analysis even if search record creation fails
+        }
 
       // Start progress simulation immediately
       const progressSteps = [
@@ -420,7 +415,7 @@ const Hero = () => {
 
         // Show results immediately after progress is complete
         setShowResults(true);
-      } catch (error) {
+      } catch {
 
         // Wait for progress simulation to complete
         if (!progressCompleted) {
@@ -473,37 +468,7 @@ const Hero = () => {
     return 'text-red-700';
   };
 
-  // Badge renk fonksiyonları
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'mevcut':
-      case 'izin veriliyor':
-      case 'uygun':
-      case 'optimal':
-      case 'iyi':
-      case 'mükemmel':
-      case 'ai dostu':
-      case 'seo':
-      case 'optimize':
-      case 'uyumlu':
-        return 'default';
-      case 'eksik':
-      case 'kısıtlı':
-      case 'düşük':
-      case 'kötü':
-      case 'var':
-      case 'fazla':
-      case 'uzun':
-      case 'iyileştirilmeli':
-      case 'kısıtlı':
-        return 'destructive';
-      case 'orta':
-      case 'kabul edilebilir':
-        return 'secondary';
-      default:
-        return 'outline';
-    }
-  };
+
 
   const getStatusBadgeColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -1092,7 +1057,7 @@ const Hero = () => {
                     {searchCreated && (
                       <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                         <p className="text-sm text-green-700">
-                          ✅ Arama kaydı başarıyla oluşturuldu. Dashboard'da görüntüleyebilirsiniz.
+                          ✅ Arama kaydı başarıyla oluşturuldu. Dashboard&apos;da görüntüleyebilirsiniz.
                         </p>
                       </div>
                     )}

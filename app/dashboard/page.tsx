@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { getUserSearches, getSearchStats, deleteSearch } from '@/redux/actions/searchActions';
-import { loadUser } from '@/redux/actions/userActions';
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -153,7 +152,7 @@ export default function Page() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {stats.topSectors.slice(0, 5).map((sector, index) => (
+                  {stats.topSectors.slice(0, 5).map((sector) => (
                     <div key={sector._id} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="text-sm font-medium">{sector._id}</span>
@@ -214,7 +213,7 @@ export default function Page() {
                               <>
                                 <span className="text-muted-foreground">•</span>
                                 <span className="text-sm text-muted-foreground">
-                                  {(search.user as any).name || (search.user as any).email}
+                                  {(search.user as { name?: string; email?: string }).name || (search.user as { name?: string; email?: string }).email}
                                 </span>
                               </>
                             ) : (

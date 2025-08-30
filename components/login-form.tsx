@@ -17,7 +17,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.user);
+  const { loading, isAuthenticated } = useSelector((state: RootState) => state.user);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -56,7 +56,7 @@ export function LoginForm({
     }
 
     try {
-      const result = await dispatch(login({
+      await dispatch(login({
         email: formData.email,
         password: formData.password
       })).unwrap();
@@ -68,8 +68,8 @@ export function LoginForm({
         window.location.href = '/dashboard';
       }, 1000);
       
-    } catch (error: any) {
-      const errorMessage = error || 'Giriş başarısız';
+    } catch (error: unknown) {
+      const errorMessage = (error as string) || 'Giriş başarısız';
       showToastMessage(errorMessage, 'error');
     }
   };
@@ -154,8 +154,8 @@ export function LoginForm({
         </Card>
         
         <div className="text-muted-foreground text-center text-xs text-balance">
-          Giriş yaparak <a href="/terms" className="underline underline-offset-4 hover:text-primary">Kullanım Şartları</a>{" "}
-          ve <a href="/privacy" className="underline underline-offset-4 hover:text-primary">Gizlilik Politikası</a>'nı kabul etmiş olursunuz.
+          Giriş yaparak <a href="/kosullar" className="underline underline-offset-4 hover:text-primary">Kullanım Şartları</a>{" "}
+          ve <a href="/gizlilik" className="underline underline-offset-4 hover:text-primary">Gizlilik Politikası</a>&apos;nı kabul etmiş olursunuz.
         </div>
       </div>
 
