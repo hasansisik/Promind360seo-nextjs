@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import { analyzeSEO, resetSEOData } from '@/redux/actions/seoActions';
+import { createSearch } from '@/redux/actions/searchActions';
 import { updateProgress, setAnalyzedUrl } from '@/redux/reducers/seoReducer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,12 +32,15 @@ const Hero = () => {
     analyzedUrl
   } = useSelector((state: RootState) => state.seo);
 
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.user);
+
 
 
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [selectedSector, setSelectedSector] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [showDemoDialog, setShowDemoDialog] = useState(false);
+  const [searchCreated, setSearchCreated] = useState(false);
 
   // Auto-scroll to results when analysis is completed
   useEffect(() => {
@@ -349,6 +353,19 @@ const Hero = () => {
       // Set analyzing state to true to show progress
       dispatch({ type: 'seo/setAnalyzing', payload: true });
 
+      // Create search record (now public - no authentication required)
+      let searchId = null;
+      try {
+        const searchResult = await dispatch(createSearch({ url: websiteUrl, sector: selectedSector }));
+        searchId = searchResult.payload?.data?._id;
+        setSearchCreated(true);
+        // Clear the notification after 3 seconds
+        setTimeout(() => setSearchCreated(false), 3000);
+      } catch (error) {
+        console.warn('Failed to create search record:', error);
+        // Continue with SEO analysis even if search record creation fails
+      }
+
       // Start progress simulation immediately
       const progressSteps = [
         { progress: 8, message: 'Web sitesi bağlantısı kontrol ediliyor...' },
@@ -396,7 +413,6 @@ const Hero = () => {
       try {
         await dispatch(analyzeSEO({ url: websiteUrl, sector: selectedSector }));
 
-
         // Wait for progress simulation to complete
         if (!progressCompleted) {
           await progressPromise;
@@ -404,7 +420,7 @@ const Hero = () => {
 
         // Show results immediately after progress is complete
         setShowResults(true);
-      } catch {
+      } catch (error) {
 
         // Wait for progress simulation to complete
         if (!progressCompleted) {
@@ -1073,6 +1089,13 @@ const Hero = () => {
                   <div className="text-center space-y-2" key={`results-${analyzedUrl}`}>
                     <h3 className="text-2xl font-bold">Analiz Sonuçları</h3>
                     <p className="text-muted-foreground">Web sitesi: {analyzedUrl}</p>
+                    {searchCreated && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                        <p className="text-sm text-green-700">
+                          ✅ Arama kaydı başarıyla oluşturuldu. Dashboard'da görüntüleyebilirsiniz.
+                        </p>
+                      </div>
+                    )}
                     {seoData?.isMockData && (
                       <p className="text-xs text-yellow-600">⚠️ Demo veriler kullanılıyor (Gerçek analiz için API anahtarı gerekli)</p>
                     )}

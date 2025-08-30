@@ -118,8 +118,6 @@ export const analyzeSEO = createAsyncThunk(
   "seo/analyze",
   async ({ url, sector }: SEOAnalysisPayload, thunkAPI) => {
     try {
-
-      
       const result: SEOAnalysisResult = {
         seoData: null,
         onPageData: null,

@@ -45,7 +45,7 @@ const Footer = () => {
     }
   };
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareUrl = 'https://promind360.com';
   const shareText = 'Promind360 ile web sitenizin SEO performansını analiz edin!';
   
   const shareLinks = {
@@ -171,13 +171,13 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-muted-foreground">
             <span>© {currentYear} Promind360. Tüm hakları saklıdır.</span>
             <div className="flex items-center space-x-4">
-              <Link href="/privacy" className="hover:text-primary transition-colors">
+              <Link href="/gizlilik" className="hover:text-primary transition-colors">
                 Gizlilik Politikası
               </Link>
-              <Link href="/terms" className="hover:text-primary transition-colors">
+              <Link href="/kosullar" className="hover:text-primary transition-colors">
                 Kullanım Şartları
               </Link>
-              <Link href="/cookies" className="hover:text-primary transition-colors">
+              <Link href="/cerezler" className="hover:text-primary transition-colors">
                 Çerez Politikası
               </Link>
             </div>

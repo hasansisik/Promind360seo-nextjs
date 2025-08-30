@@ -1,41 +1,26 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { register, login, loadUser, logout, verifyEmail, verifyEmailChange, sendEmailChangeVerification, againEmail, forgotPassword, resetPassword, editProfile, verifyPassword } from "../actions/userActions";
+import { login, loadUser, logout, editProfile, getWhatsApp } from "../actions/userActions";
 
 interface UserState {
-    items: any[];
-    item: any;
     loading: boolean;
     error: string | null;
-    isAuthenticated?: boolean;
-    user?: any;
-    message?: string | null;
+    isAuthenticated: boolean;
+    user: any;
+    message: string | null;
+    whatsappNumber: string;
 }
 
 const initialState: UserState = {
-    items: [],
-    item: {},
     loading: false,
     error: null,
     isAuthenticated: false,
     user: null,
     message: null,
+    whatsappNumber: "905555555555",
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
     builder
-        // Register
-        .addCase(register.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(register.fulfilled, (state, action) => {
-            state.loading = false;
-            state.isAuthenticated = false;
-            state.user = action.payload;
-        })
-        .addCase(register.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
         // Login
         .addCase(login.pending, (state) => {
             state.loading = true;
@@ -76,54 +61,6 @@ export const userReducer = createReducer(initialState, (builder) => {
             state.loading = false;
             state.error = action.payload as string | null;
         })
-        //Verify
-        .addCase(verifyEmail.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(verifyEmail.fulfilled, (state, action) => {
-            state.loading = false;
-            state.message = action.payload;
-        })
-        .addCase(verifyEmail.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
-        // Again Email
-        .addCase(againEmail.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(againEmail.fulfilled, (state, action) => {
-            state.loading = false;
-            state.message = action.payload || 'Email successfully sent again.';
-        })
-        .addCase(againEmail.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
-        // Forgot Password
-        .addCase(forgotPassword.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(forgotPassword.fulfilled, (state, action) => {
-            state.loading = false;
-            state.message = action.payload || 'Password reset email sent.';
-        })
-        .addCase(forgotPassword.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
-        // Reset Password
-        .addCase(resetPassword.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(resetPassword.fulfilled, (state, action) => {
-            state.loading = false;
-            state.message = action.payload || 'Password reset successful.';
-        })
-        .addCase(resetPassword.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
         // Edit Profile
         .addCase(editProfile.pending, (state) => {
             state.loading = true;
@@ -132,48 +69,22 @@ export const userReducer = createReducer(initialState, (builder) => {
         })
         .addCase(editProfile.fulfilled, (state, action) => {
             state.loading = false;
-            state.message = action.payload || 'Profil başarıyla güncellendi.';
+            state.user = action.payload;
+            state.message = 'Profil başarıyla güncellendi.';
         })
         .addCase(editProfile.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string | null;
         })
-        // Verify Password
-        .addCase(verifyPassword.pending, (state) => {
+        // Get WhatsApp
+        .addCase(getWhatsApp.pending, (state) => {
             state.loading = true;
-            state.error = null;
         })
-        .addCase(verifyPassword.fulfilled, (state, action) => {
+        .addCase(getWhatsApp.fulfilled, (state, action) => {
             state.loading = false;
-            // Don't set message for verification, let the component handle it
+            state.whatsappNumber = action.payload;
         })
-        .addCase(verifyPassword.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
-        // Verify Email Change
-        .addCase(verifyEmailChange.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(verifyEmailChange.fulfilled, (state, action) => {
-            state.loading = false;
-            // Don't set message for email change verification, let component handle it
-        })
-        .addCase(verifyEmailChange.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string | null;
-        })
-        // Send Email Change Verification
-        .addCase(sendEmailChangeVerification.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(sendEmailChangeVerification.fulfilled, (state, action) => {
-            state.loading = false;
-            // Don't set message for email change verification, let component handle it
-        })
-        .addCase(sendEmailChangeVerification.rejected, (state, action) => {
+        .addCase(getWhatsApp.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string | null;
         })

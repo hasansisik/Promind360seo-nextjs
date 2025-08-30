@@ -1,13 +1,23 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { getWhatsApp } from '@/redux/actions/userActions';
 import { MessageCircle } from 'lucide-react';
 
 const FloatingWhatsAppButton = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { whatsappNumber } = useSelector((state: RootState) => state.user);
+  
+  // Load WhatsApp number on component mount
+  useEffect(() => {
+    dispatch(getWhatsApp());
+  }, [dispatch]);
+  
   const openWhatsApp = () => {
-    // WhatsApp numarasını buraya ekleyin
-    const phoneNumber = '905555555555'; // Örnek numara
     const message = 'Merhaba! SEO analizi hakkında bilgi almak istiyorum.';
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
