@@ -3,7 +3,8 @@
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Star, Quote, TrendingUp, Users, Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Star, Quote, TrendingUp, Users, Award, Search } from 'lucide-react';
 
 const Testimonials = () => {
   const testimonials = [
@@ -157,7 +158,7 @@ const Testimonials = () => {
               <p className="text-muted-foreground mb-6">
                 1000+ kullanıcı gibi siz de sitenizin SEO performansını anında öğrenin.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                 <Badge variant="outline" className="text-sm">
                   <Users className="h-3 w-3 mr-1" />
                   1000+ Analiz Edilen Site
@@ -167,6 +168,19 @@ const Testimonials = () => {
                   %89 Ortalama Doğruluk
                 </Badge>
               </div>
+              <Button 
+                onClick={() => {
+                  document.getElementById('hero')?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                  });
+                }}
+                className="w-full sm:w-auto"
+                size="lg"
+              >
+                <Search className="h-5 w-5 mr-2" />
+                Şimdi Ücretsiz Analiz Et
+              </Button>
             </CardContent>
           </Card>
         </div>

@@ -15,6 +15,46 @@ import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import { Search, TrendingUp, Zap, Target, X, Loader2, CheckCircle, AlertCircle, BarChart3, Globe, Smartphone, Lightbulb, Play } from 'lucide-react';
 
+// Translation function for weaknesses
+const translateWeakness = (weakness: string): string => {
+  const translations: { [key: string]: string } = {
+    'More content diversity can be added': 'Daha fazla içerik çeşitliliği eklenebilir',
+    'Social media integration can be improved': 'Sosyal medya entegrasyonu geliştirilebilir',
+    'Page loading speed needs improvement': 'Sayfa yükleme hızı iyileştirilmelidir',
+    'Mobile responsiveness can be enhanced': 'Mobil uyumluluk geliştirilebilir',
+    'SEO optimization needs work': 'SEO optimizasyonu iyileştirilmelidir',
+    'Content quality can be improved': 'İçerik kalitesi iyileştirilebilir',
+    'User experience needs enhancement': 'Kullanıcı deneyimi geliştirilmelidir',
+    'Accessibility features need improvement': 'Erişilebilirlik özellikleri iyileştirilmelidir',
+    'Meta tags optimization required': 'Meta etiket optimizasyonu gerekli',
+    'Image optimization needed': 'Görsel optimizasyonu gerekli',
+    'Link structure can be improved': 'Link yapısı iyileştirilebilir',
+    'Heading structure needs work': 'Başlık yapısı iyileştirilmelidir'
+  };
+  
+  return translations[weakness] || weakness;
+};
+
+// Translation function for strengths
+const translateStrength = (strength: string): string => {
+  const translations: { [key: string]: string } = {
+    'Excellent page loading speed and performance': 'Mükemmel sayfa yükleme hızı ve performans',
+    'Strong SEO optimization and meta tags': 'Güçlü SEO optimizasyonu ve meta etiketler',
+    'High accessibility score': 'Yüksek erişilebilirlik skoru',
+    'Professional content structure and heading hierarchy': 'Profesyonel içerik yapısı ve heading hiyerarşisi',
+    'Good mobile responsiveness': 'İyi mobil uyumluluk',
+    'Well-optimized images': 'İyi optimize edilmiş görseller',
+    'Proper meta descriptions': 'Uygun meta açıklamaları',
+    'Good internal linking structure': 'İyi dahili link yapısı',
+    'Fast loading times': 'Hızlı yükleme süreleri',
+    'Clean URL structure': 'Temiz URL yapısı',
+    'Good content quality': 'İyi içerik kalitesi',
+    'Proper heading structure': 'Uygun başlık yapısı'
+  };
+  
+  return translations[strength] || strength;
+};
+
 const Hero = () => {
   const dispatch = useDispatch<AppDispatch>();
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -837,7 +877,7 @@ const Hero = () => {
                           {demoData.combinedReport.strengths.map((strength: string, index: number) => (
                             <div key={index} className="flex items-center space-x-2 text-sm">
                               <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                              <span className="text-gray-700 text-left">{strength}</span>
+                              <span className="text-gray-700 text-left">{translateStrength(strength)}</span>
                             </div>
                           ))}
                         </div>
@@ -848,7 +888,7 @@ const Hero = () => {
                           {demoData.combinedReport.weaknesses.map((weakness: string, index: number) => (
                             <div key={index} className="flex items-center space-x-2 text-sm">
                               <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
-                              <span className="text-gray-700 text-left">{weakness}</span>
+                              <span className="text-gray-700 text-left">{translateWeakness(weakness)}</span>
                             </div>
                           ))}
                         </div>
@@ -1508,7 +1548,7 @@ const Hero = () => {
                                 {combinedReport.strengths.slice(0, 3).map((strength: string, index: number) => (
                                   <div key={index} className="flex items-center space-x-2 text-sm">
                                     <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                    <span className="text-gray-700 text-left">{strength}</span>
+                                    <span className="text-gray-700 text-left">{translateStrength(strength)}</span>
                                   </div>
                                 ))}
                               </div>
@@ -1521,7 +1561,7 @@ const Hero = () => {
                                 {combinedReport.weaknesses.slice(0, 3).map((weakness: string, index: number) => (
                                   <div key={index} className="flex items-center space-x-2 text-sm">
                                     <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
-                                    <span className="text-gray-700 text-left">{weakness}</span>
+                                    <span className="text-gray-700 text-left">{translateWeakness(weakness)}</span>
                                   </div>
                                 ))}
                               </div>
