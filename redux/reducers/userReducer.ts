@@ -16,7 +16,7 @@ const initialState: UserState = {
     isAuthenticated: false,
     user: null,
     message: null,
-    whatsappNumber: "905555555555",
+    whatsappNumber: "905066184386",
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
